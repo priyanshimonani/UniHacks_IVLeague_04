@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard"
 import ProtectedRoute from "./components/ProtectedRoute"
 import SignUpAdmin from "./pages/SignUpAdmin"
 import LoginAdmin from "./pages/LoginAdmin"
+import Search from "./pages/Search"
 
 function Layout() {
 
@@ -19,6 +20,7 @@ function Layout() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signupadmin" element={<SignUpAdmin />} />
         <Route path="/loginadmin" element={<LoginAdmin />} />
+        <Route path="/search" element={<Search />} />
 
         {/* 🔐 PROTECTED ROUTE */}
         <Route 
