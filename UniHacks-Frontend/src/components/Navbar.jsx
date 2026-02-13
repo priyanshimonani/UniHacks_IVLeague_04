@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Bell, User, Moon } from "lucide-react";
+import { Bell,LogOut } from "lucide-react";
 
 export default function Navbar() {
   return (
@@ -31,6 +31,9 @@ export default function Navbar() {
           </Link>
 
           {/* Profile */}
+          <Link to="/" className="relative hover:text-[#10b981] transition hover:-translate-y-1">
+            <LogOut className="w-5 h-5" />
+          </Link>
           
 
         </div>
