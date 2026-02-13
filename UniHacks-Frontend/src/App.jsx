@@ -27,14 +27,10 @@ function Layout() {
         <Route path="/signupadmin" element={<SignUpAdmin />} />
         <Route path="/loginadmin" element={<LoginAdmin />} />
         <Route path="/search" element={<Search />} />
-<<<<<<< HEAD
-         <Route path="/search" element={<Search />} />
-=======
         <Route path="/profile" element={<Profile />} />
         <Route path="/notifications" element={<Notifications />} />
          <Route path="/joinqueue" element={<JoinQueue />} />
          <Route path="/admindashboard" element={<AdminDashboard />} />
->>>>>>> c9d8636431c27a817f9a6728788431eada3ebad7
 
         {/* 🔐 PROTECTED ROUTE */}
         {/* <Route 
