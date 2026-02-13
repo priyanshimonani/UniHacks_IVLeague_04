@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import SignUpAdmin from "./pages/SignUpAdmin"
 import LoginAdmin from "./pages/LoginAdmin"
 import Search from "./pages/Search"
+import { JoinQueue } from "./pages/User-JoinQueue"
 
 function Layout() {
 
@@ -21,6 +22,7 @@ function Layout() {
         <Route path="/signupadmin" element={<SignUpAdmin />} />
         <Route path="/loginadmin" element={<LoginAdmin />} />
         <Route path="/search" element={<Search />} />
+         <Route path="/joinqueue" element={<JoinQueue />} />
 
         {/* 🔐 PROTECTED ROUTE */}
         {/* <Route 

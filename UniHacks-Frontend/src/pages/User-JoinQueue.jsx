@@ -1,210 +1,266 @@
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { CheckCircle, Clock, Users, MapPin, ArrowRight, Sparkles } from "lucide-react";
-import confetti from "canvas-confetti";
-import { mockOffices } from "../../data/mockData";
+import React, { useState, useEffect } from "react"
+import { motion } from "framer-motion"
+import confetti from "canvas-confetti"
 
-/* Light Glass Card */
-function GlassCard({ children, className = "" }) {
-  return (
-    <div className={`bg-white/80 backdrop-blur-md rounded-2xl shadow-lg ${className}`}>
-      {children}
-    </div>
-  );
-}
+export function JoinQueue() {
 
-export default function JoinQueue() {
-  const { officeId } = useParams();
-  const [joined, setJoined] = useState(false);
+  const [currentToken, setCurrentToken] = useState(142)
+  const yourToken = 148
+  const [showSwap, setShowSwap] = useState(false)
+  const [showLeave, setShowLeave] = useState(false)
 
-  const office = mockOffices.find((o) => o.id === officeId);
-  const yourToken = office ? office.currentToken + office.queueLength + 1 : 0;
+  const peopleAhead = Math.max(yourToken - currentToken, 0)
+  const estimatedWait = peopleAhead * 3
+  const isYourTurn = currentToken >= yourToken
 
-  if (!office) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-yellow-100 via-amber-100 to-orange-100">
-        <div className="text-gray-800 text-2xl font-semibold">Office not found</div>
-      </div>
-    );
+  /* Simulated Queue Movement */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentToken(prev =>
+        prev < yourToken ? prev + 1 : prev
+      )
+    }, 4000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  /* Confetti when turn */
+  useEffect(() => {
+    if (isYourTurn) {
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 }
+      })
+    }
+  }, [isYourTurn])
+
+  /* Progress Calculation */
+  const progress =
+    ((yourToken - currentToken) / (yourToken - (yourToken - 20))) * 100
+
+  const getStatusMessage = () => {
+    if (isYourTurn) return "🎉 It’s your turn! Please proceed."
+    if (peopleAhead <= 2) return "⚡ Almost your turn. Please be nearby."
+    if (peopleAhead <= 5) return "⏳ You’re getting close."
+    return "🕒 Sit back and relax."
   }
 
-  const handleJoinQueue = () => {
-    setJoined(true);
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
-  };
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#f7f8c8] via-yellow-100 to-amber-100 pt-24 px-6 relative overflow-hidden">
 
-  /* SUCCESS SCREEN */
-  if (joined) {
-    return (
-      <div className="min-h-screen pt-16 bg-linear-to-br from-yellow-100 via-amber-100 to-orange-100">
-        <div className="max-w-4xl mx-auto px-4 py-12">
+      {/* Sticky Bar */}
+      <motion.div
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="fixed top-4 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-xl px-6 py-2 rounded-full shadow-lg z-50 text-sm font-medium"
+      >
+        Token #{yourToken} | {peopleAhead} ahead | ~{estimatedWait} mins
+      </motion.div>
+
+      <div className="max-w-5xl mx-auto">
+
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-14"
+        >
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            SBI Main Branch
+          </h1>
+          <p className="text-gray-600">
+            MG Road, Ahmedabad
+          </p>
+        </motion.div>
+
+        {/* Token Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className={`relative bg-white/80 backdrop-blur-xl rounded-3xl p-12 text-center shadow-2xl mb-12 ${isYourTurn ? "ring-4 ring-[#10b981]" : ""
+            }`}
+        >
+
+          <div className="text-sm uppercase text-gray-500 mb-4">
+            Your Token
+          </div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            key={currentToken}
+            initial={{ rotateX: 90 }}
+            animate={{ rotateX: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-8xl font-extrabold text-[#10b981]"
           >
-
-            {/* Success */}
-            <div className="text-center mb-8">
-              <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-4" />
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                You're In! 🎉
-              </h1>
-              <p className="text-gray-600">
-                Successfully joined the queue
-              </p>
-            </div>
-
-            {/* Token Card */}
-            <GlassCard className="p-8 mb-6">
-
-              <div className="text-center mb-6">
-                <div className="text-sm text-gray-600 mb-2">{office.name}</div>
-                <div className="text-sm text-gray-500 flex items-center justify-center">
-                  <MapPin className="w-4 h-4 mr-1" />
-                  {office.location}
-                </div>
-              </div>
-
-              {/* Token Number */}
-              <div className="bg-linear-to-r from-indigo-600 to-purple-600 rounded-3xl p-10 text-center text-white mb-8">
-                <div className="text-sm uppercase tracking-wide mb-2">
-                  Your Token Number
-                </div>
-                <div className="text-7xl font-bold">#{yourToken}</div>
-              </div>
-
-              {/* Queue Info */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="text-center p-4 bg-gray-100 rounded-2xl">
-                  <div className="text-sm text-gray-600">Currently Serving</div>
-                  <div className="text-2xl font-bold text-gray-800">
-                    #{office.currentToken}
-                  </div>
-                </div>
-
-                <div className="text-center p-4 bg-gray-100 rounded-2xl">
-                  <div className="text-sm text-gray-600">People Ahead</div>
-                  <div className="text-2xl font-bold text-gray-800">
-                    {office.queueLength}
-                  </div>
-                </div>
-              </div>
-
-              {/* Estimated Wait */}
-              <div className="text-center p-6 bg-indigo-50 rounded-2xl mb-6">
-                <div className="flex items-center justify-center mb-2 text-gray-600">
-                  <Clock className="w-5 h-5 mr-2" />
-                  Estimated Wait Time
-                </div>
-                <div className="text-3xl font-bold text-gray-800">
-                  ~{office.estimatedWaitTime + 5} mins
-                </div>
-              </div>
-
-              {/* Button */}
-              <Link to={`/queue/${office.id}`}>
-                <button className="w-full py-4 bg-linear-to-r from-indigo-600 to-purple-600 text-white rounded-full font-semibold flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transition">
-                  <span>View Live Queue</span>
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              </Link>
-
-            </GlassCard>
-
-            {/* Features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <GlassCard className="p-4 text-center">
-                <Sparkles className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
-                <div className="text-sm text-gray-600">
-                  Token swap available
-                </div>
-              </GlassCard>
-
-              <GlassCard className="p-4 text-center">
-                <Users className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-                <div className="text-sm text-gray-600">
-                  Real-time position tracking
-                </div>
-              </GlassCard>
-
-              <GlassCard className="p-4 text-center">
-                <Clock className="w-8 h-8 text-teal-500 mx-auto mb-2" />
-                <div className="text-sm text-gray-600">
-                  Smart ETA predictions
-                </div>
-              </GlassCard>
-            </div>
-
+            #{yourToken}
           </motion.div>
-        </div>
-      </div>
-    );
-  }
 
-  /* CONFIRM SCREEN */
-  return (
-    <div className="min-h-screen pt-16 bg-linear-to-br from-yellow-100 via-amber-100 to-orange-100">
-      <div className="max-w-4xl mx-auto px-4 py-12">
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-
-          <h1 className="text-4xl font-bold text-gray-900 text-center mb-12">
-            Confirm Queue Details
-          </h1>
-
-          <GlassCard className="p-8">
-
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              {office.name}
-            </h2>
-
-            <div className="space-y-4 mb-8 text-gray-600">
-              <div className="flex items-center">
-                <MapPin className="w-5 h-5 mr-3" />
-                {office.location}
-              </div>
-
-              <div className="flex items-center">
-                <Clock className="w-5 h-5 mr-3" />
-                {office.operatingHours}
-              </div>
-
-              <div className="flex items-center">
-                <Users className="w-5 h-5 mr-3" />
-                {office.queueLength} people currently waiting
-              </div>
+          {/* Progress Bar */}
+          <div className="mt-10 max-w-xl mx-auto">
+            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${100 - progress}%` }}
+                transition={{ duration: 0.8 }}
+                className="h-full bg-[#10b981]"
+              />
             </div>
-
-            {/* Token Preview */}
-            <div className="bg-indigo-50 rounded-2xl p-6 mb-8 text-center">
-              <div className="text-sm text-gray-600 mb-2">
-                You will receive token number
-              </div>
-              <div className="text-5xl font-bold text-gray-800 mb-2">
-                #{yourToken}
-              </div>
-              <div className="text-sm text-gray-600">
-                Estimated wait: ~{office.estimatedWaitTime + 5} minutes
-              </div>
+            <div className="text-xs text-gray-500 mt-2">
+              Queue Progress
             </div>
-
-            <button
-              onClick={handleJoinQueue}
-              className="w-full py-4 bg-linear-to-r from-indigo-600 to-purple-600 text-white rounded-full font-semibold text-lg shadow-lg hover:scale-105 transition"
-            >
-              Confirm & Join Queue
-            </button>
-
-          </GlassCard>
+          </div>
 
         </motion.div>
+
+        {/* Status */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center text-xl font-semibold text-gray-800 mb-12"
+        >
+          {getStatusMessage()}
+        </motion.div>
+
+        {/* Stats Grid */}
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+
+          {[
+            { label: "Currently Serving", value: currentToken },
+            { label: "People Ahead", value: peopleAhead },
+            { label: "Estimated Wait", value: `~${estimatedWait} mins` }
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2 }}
+              viewport={{ once: true }}
+              className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition"
+            >
+              <div className="text-sm text-gray-500 mb-2">
+                {item.label}
+              </div>
+              <div className="text-3xl font-bold text-gray-900">
+                {item.value}
+              </div>
+            </motion.div>
+          ))}
+
+        </div>
+
+        {/* Buttons (Smaller + Cleaner) */}
+        <div className="flex justify-center gap-6">
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowSwap(true)}
+            className="px-6 py-2 bg-[#10b981] text-white rounded-full font-medium shadow-md mb-5"
+          >
+            Request Swap
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowLeave(true)}
+            className="px-6 py-2 bg-red-500 text-white rounded-full font-medium shadow-md mb-5"
+          >
+            Leave Queue
+          </motion.button>
+
+        </div>
+
       </div>
+
+      {/* Swap Modal */}
+      {showSwap && (
+        <div className="modal-overlay">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="modal-card"
+          >
+            <h2 className="text-xl font-bold mb-4">
+              Request Token Swap
+            </h2>
+
+            <textarea
+              placeholder="Add a message"
+              className="w-full p-3 border rounded-lg mb-4"
+            />
+
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowSwap(false)}
+                className="px-4 py-2 border rounded-full"
+              >
+                Cancel
+              </button>
+
+              <button className="px-4 py-2 bg-[#10b981] text-white rounded-full">
+                Send
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Leave Modal */}
+      {showLeave && (
+        <div className="modal-overlay">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="modal-card text-center"
+          >
+            <h2 className="text-xl font-bold mb-4">
+              Leave Queue?
+            </h2>
+
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setShowLeave(false)}
+                className="px-4 py-2 border rounded-full"
+              >
+                Cancel
+              </button>
+
+              <button className="px-4 py-2 bg-red-500 text-white rounded-full">
+                Confirm
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      <style>{`
+        .modal-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.3);
+          backdrop-filter: blur(6px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 100;
+        }
+
+        .modal-card {
+          background: white;
+          border-radius: 1.5rem;
+          padding: 2rem;
+          width: 90%;
+          max-width: 400px;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+      `}</style>
+
     </div>
-  );
+  )
 }
