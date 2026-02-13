@@ -1,121 +1,101 @@
-// import React from "react"
-// import { jwtDecode } from "jwt-decode"
-
-// const Dashboard = () => {
-
-//   const token = localStorage.getItem("token")
-
-//   if (!token) {
-//     return (
-//       <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
-//         <h1>Please Login First 🔐</h1>
-//       </div>
-//     )
-//   }
-
-//   const decoded = jwtDecode(token)
-//   const username = decoded.name
-
-//   return (
-//     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
-//       <h1>Welcome, {username} </h1>
-
-//       <button 
-//         onClick={() => {
-//           localStorage.removeItem("token")
-//           window.location.href = "/login"
-//         }}
-//         style={{ marginTop: "20px" }}
-//       >
-//         Logout
-//       </button>
-//     </div>
-//   )
-// }
-
-// export default Dashboard
-
-import React from "react"
+import React, { useEffect, useRef } from "react"
 
 const Dashboard = () => {
+
+  const revealRefs = useRef([])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show")
+          }
+        })
+      },
+      { threshold: 0.2 }
+    )
+
+    revealRefs.current.forEach(el => el && observer.observe(el))
+  }, [])
+
+  const features = [
+    {
+      title: "Real-Time Updates",
+      desc: "Track queue movement live without refreshing.",
+      span: "md:col-span-2"
+    },
+    {
+      title: "Smart Queue Logic",
+      desc: "Optimized handling for faster and fair service."
+    },
+    {
+      title: "Token Swap",
+      desc: "Securely exchange your position with consent."
+    },
+    {
+      title: "Multi-Venue Support",
+      desc: "Banks, hospitals and government offices.",
+      span: "md:col-span-2"
+    }
+  ]
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f7f8c8] via-yellow-100 to-amber-100 text-gray-800 overflow-hidden">
 
       {/* Navbar */}
-      <nav className="flex justify-between items-center px-10 py-5 bg-white/50 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all">
+      <nav className="flex justify-between items-center px-10 py-5 bg-white/60 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <h1 className="text-2xl font-bold text-[#10b981] tracking-wide">
           QueueNest
         </h1>
-
-        <div className="flex gap-8 font-medium">
-          <button className="hover:text-[#10b981] transition">Home</button>
-          <button className="hover:text-[#10b981] transition">Features</button>
-          <button className="hover:text-[#10b981] transition">About</button>
-        </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="text-center px-6 py-32 max-w-5xl mx-auto animate-fadeIn">
-        
-        <h1 className="title1 text-6xl font-extrabold mb-6 tracking-tight text-gray-900 animate-slideUp">
+      {/* Hero */}
+      <section className="text-center px-6 py-32 max-w-5xl mx-auto">
+        <h1 className="title1 text-10xl font-extrabold mb-6 tracking-tight text-gray-900">
           QueueNest
         </h1>
-
-        <p className="text-2xl text-[#10b981] font-semibold mb-4 animate-fadeInDelay">
+        <p className="text-2xl text-[#10b981] font-semibold mb-4">
           Wait Smart. Not Long.
         </p>
-
         <p className="text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-          Join virtual queues for banks, hospitals, colleges, and government
-          offices. Track live token updates, request swaps securely,
-          and experience modern queue management.
+          Join virtual queues and track your position in real time.
         </p>
 
         <div className="flex justify-center gap-6">
-          <button className="bg-[#10b981] text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-2xl hover:scale-110 transition duration-300">
-            Join Queue →
-          </button>
-
-          <button className="border border-[#10b981] text-[#10b981] px-8 py-3 rounded-full font-semibold hover:bg-[#10b981] hover:text-white transition duration-300">
-            View Dashboard
-          </button>
+          <button className="primary-btn">Join Queue →</button>
+          <button className="secondary-btn">Admin Panel</button>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="px-10 pb-28 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-16">
-          Powerful Features
-        </h2>
+      {/* Powerful Features */}
+      <section className="px-6 pb-32 max-w-6xl mx-auto">
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div
+          className="text-center mb-20 reveal"
+          ref={el => revealRefs.current[0] = el}
+        >
+          <h2 className="text-4xl font-bold mb-4 title1">
+            Powerful Features
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Everything you need to modernize waiting systems.
+          </p>
+        </div>
 
-          {[
-            {
-              title: "Real-time Updates",
-              desc: "Live queue tracking with accurate wait time prediction."
-            },
-            {
-              title: "Smart Queue",
-              desc: "Optimized digital queue flow for better efficiency."
-            },
-            {
-              title: "Token Swap",
-              desc: "Secure, transparent position exchange system."
-            },
-            {
-              title: "Multiple Venues",
-              desc: "Banks, hospitals, colleges and public offices."
-            }
-          ].map((feature, index) => (
+        <div className="grid md:grid-cols-3 gap-8 auto-rows-[240px]">
+
+          {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-white p-8 rounded-3xl shadow-md hover:shadow-2xl hover:-translate-y-3 transition duration-300"
+              ref={el => revealRefs.current[index + 1] = el}
+              className={`bento-card reveal ${feature.span || ""}`}
+              style={{ transitionDelay: `${index * 0.2}s` }}
             >
-              <h3 className="font-semibold text-lg mb-3 text-gray-800">
+              <h3 className="text-xl font-bold mb-3">
                 {feature.title}
               </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed">
                 {feature.desc}
               </p>
             </div>
@@ -124,47 +104,83 @@ const Dashboard = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="px-8 pb-28 max-w-5xl mx-auto">
-        <div className="bg-white rounded-3xl p-12 grid md:grid-cols-3 gap-10 text-center shadow-xl">
-
-          <div>
-            <h2 className="text-4xl font-bold text-[#10b981]">10,000+</h2>
-            <p className="text-gray-500">Active Users</p>
-          </div>
-
-          <div>
-            <h2 className="text-4xl font-bold text-emerald-500">500+</h2>
-            <p className="text-gray-500">Partner Offices</p>
-          </div>
-
-          <div>
-            <h2 className="text-4xl font-bold text-green-600">45 min</h2>
-            <p className="text-gray-500">Average Time Saved</p>
-          </div>
-
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="text-center pb-28 px-6">
-        <div className="bg-[#10b981] text-white rounded-3xl py-14 px-10 max-w-3xl mx-auto shadow-2xl hover:scale-105 transition duration-300">
-          <h2 className="text-3xl font-bold mb-4">
-            Ready to Skip the Queue?
-          </h2>
-          <p className="opacity-90 mb-6">
-            Join thousands saving time every day.
-          </p>
-          <button className="bg-white text-[#10b981] px-8 py-3 rounded-full font-semibold hover:scale-110 transition">
-            Get Started
-          </button>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="text-center pb-6 text-gray-500">
+      <footer className="text-center pb-10 text-gray-500">
         © 2025 QueueNest. All rights reserved.
       </footer>
+
+      {/* Animations + Styles */}
+      <style>{`
+
+        /* Scroll Reveal */
+        .reveal {
+          opacity: 0;
+          transform: translateY(60px);
+          transition: all 0.8s ease;
+        }
+
+        .reveal.show {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Bento Card */
+        .bento-card {
+          background: rgba(255,255,255,0.7);
+          backdrop-filter: blur(10px);
+          border-radius: 1.8rem;
+          padding: 2rem;
+          box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+          transition: all 0.4s ease;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .bento-card:hover {
+          background: #10b981;
+          transform: translateY(-12px) scale(1.03);
+          box-shadow: 0 30px 60px rgba(16,185,129,0.35);
+          color: white;
+        }
+
+        .bento-card:hover p,
+        .bento-card:hover h3 {
+          color: white;
+        }
+
+        /* Buttons */
+        .primary-btn {
+          background: #10b981;
+          color: white;
+          padding: 0.9rem 2.2rem;
+          border-radius: 9999px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+        }
+
+        .primary-btn:hover {
+          transform: scale(1.08);
+          box-shadow: 0 20px 40px rgba(16,185,129,0.4);
+        }
+
+        .secondary-btn {
+          border: 2px solid #10b981;
+          color: #10b981;
+          padding: 0.9rem 2.2rem;
+          border-radius: 9999px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+        }
+
+        .secondary-btn:hover {
+          background: #10b981;
+          color: white;
+          transform: scale(1.08);
+        }
+
+      `}</style>
 
     </div>
   )
