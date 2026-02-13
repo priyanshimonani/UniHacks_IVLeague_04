@@ -8,18 +8,17 @@ import SignUpAdmin from "./pages/SignUpAdmin"
 import LoginAdmin from "./pages/LoginAdmin"
 import Search from "./pages/Search"
 import { JoinQueue } from "./pages/User-JoinQueue"
-<<<<<<< HEAD
-=======
 import Navbar from "./components/Navbar"
 import AdminDashboard from "./pages/Admin-Dashboard"
->>>>>>> c9d8636431c27a817f9a6728788431eada3ebad7
+import Notifications from "./pages/Notifications"
+
 
 function Layout() {
 
   return (
     <>
       <div className="bg"></div>
-
+      <Navbar/>
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
@@ -27,20 +26,10 @@ function Layout() {
         <Route path="/signupadmin" element={<SignUpAdmin />} />
         <Route path="/loginadmin" element={<LoginAdmin />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/profile" element={<Profile />} />
+        {/* <Route path="/profile" element={<Profile />} /> */}
         <Route path="/notifications" element={<Notifications />} />
          <Route path="/joinqueue" element={<JoinQueue />} />
          <Route path="/admindashboard" element={<AdminDashboard />} />
-
-        {/* 🔐 PROTECTED ROUTE */}
-        {/* <Route 
-          path="/" 
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } 
-        /> */}
 
       </Routes>
     </>
