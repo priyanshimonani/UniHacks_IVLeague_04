@@ -39,7 +39,7 @@ import React from "react"
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-amber-100 to-orange-100 text-gray-800">
+    <div className="min-h-screen bg-linear-to-br from-yellow-100 via-amber-100 to-orange-100 text-gray-800">
 
       {/* Navbar */}
       <nav className="flex justify-between items-center px-8 py-4 bg-white/60 backdrop-blur-lg shadow-sm sticky top-0 z-50">
