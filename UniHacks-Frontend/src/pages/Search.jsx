@@ -33,7 +33,7 @@ const Search = () => {
       <div className="fixed top-0 right-0 w-96 h-96 bg-green-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000 -z-10"></div>
 
       {/* CONTENT CONTAINER: Centered with padding */}
-      <div className="container mx-auto px-4 py-12 md:py-20 max-w-7xl relative z-10 flex flex-col items-center">
+      <div className="container mx-auto px-4 py-12 md:py-20 max-w-7xl relative z-10 flex flex-col items-center mt-30">
         
         {/* 1. HEADER SECTION (Stacked vertically) */}
         <div className="text-center w-full mb-12 animate-fade-in-down">

@@ -47,7 +47,7 @@ export function JoinQueue() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#feffe0] via-yellow-50 to-orange-50 pt-24 px-6 relative overflow-hidden text-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-[#feffe0] via-yellow-50 to-orange-50  pt-24 px-6 relative overflow-hidden text-gray-800">
 
       {/* Background Blobs */}
       <div className="fixed top-0 left-0 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob -z-10"></div>
@@ -66,7 +66,7 @@ export function JoinQueue() {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <div className="inline-block p-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/60 shadow-sm mb-4">
+          <div className="inline-block p-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/60 shadow-sm mb-4 mt-10">
              <svg className="w-8 h-8 text-[#10b981] mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
           </div>
           <h1 className="text-4xl md:text-5xl font-black tracking-tight text-gray-900 mb-2">
