@@ -23,14 +23,14 @@ function Layout() {
         <Route path="/search" element={<Search />} />
 
         {/* 🔐 PROTECTED ROUTE */}
-        <Route 
+        {/* <Route 
           path="/" 
           element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
           } 
-        />
+        /> */}
 
       </Routes>
     </>
