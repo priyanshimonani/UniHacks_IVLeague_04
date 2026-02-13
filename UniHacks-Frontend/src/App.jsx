@@ -10,12 +10,14 @@ import Search from "./pages/Search"
 import Profile from "./pages/Profile"
 import Notifications from "./pages/Notifications"
 import { JoinQueue } from "./pages/User-JoinQueue"
+import Navbar from "./components/Navbar"
 
 function Layout() {
 
   return (
     <>
       <div className="bg"></div>
+      <Navbar />
 
       <Routes>
         <Route path="/" element={<Dashboard />} />
