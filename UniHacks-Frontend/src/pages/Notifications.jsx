@@ -6,12 +6,13 @@ import {
   CheckCircle,
   Clock,
   AlertCircle,
-  Repeat
+  Repeat,
+  Check
 } from "lucide-react";
 
 export default function Notifications() {
 
-  // Mock Data inside same file
+  // Mock Data
   const mockNotifications = [
     {
       id: 1,
@@ -39,118 +40,153 @@ export default function Notifications() {
     }
   ];
 
-  // Icon selector
-  const getIcon = (type) => {
+  // Helper to get styles based on type
+  const getNotificationStyle = (type) => {
     switch (type) {
-      case "swap_request":
       case "swap_success":
-        return <Repeat className="w-6 h-6 text-purple-600" />;
-
       case "swap_accepted":
-        return <CheckCircle className="w-6 h-6 text-green-600" />;
-
+        return {
+          icon: <CheckCircle className="w-6 h-6" />,
+          colorClass: "text-[#10b981]",
+          bgClass: "bg-emerald-100",
+          borderClass: "group-hover:border-[#10b981]"
+        };
       case "turn_soon":
-        return <Clock className="w-6 h-6 text-amber-600" />;
-
+        return {
+          icon: <Clock className="w-6 h-6" />,
+          colorClass: "text-amber-500",
+          bgClass: "bg-amber-100",
+          borderClass: "group-hover:border-amber-500"
+        };
       case "queue_paused":
-        return <AlertCircle className="w-6 h-6 text-red-600" />;
-
+        return {
+          icon: <AlertCircle className="w-6 h-6" />,
+          colorClass: "text-red-500",
+          bgClass: "bg-red-100",
+          borderClass: "group-hover:border-red-500"
+        };
+      case "swap_request":
+        return {
+          icon: <Repeat className="w-6 h-6" />,
+          colorClass: "text-purple-500",
+          bgClass: "bg-purple-100",
+          borderClass: "group-hover:border-purple-500"
+        };
       default:
-        return <Bell className="w-6 h-6 text-indigo-600" />;
+        return {
+          icon: <Bell className="w-6 h-6" />,
+          colorClass: "text-indigo-500",
+          bgClass: "bg-indigo-100",
+          borderClass: "group-hover:border-indigo-500"
+        };
     }
   };
 
   return (
-    <div className="min-h-screen pt-16 pb-20 bg-linear-to-br from-yellow-100 via-amber-100 to-orange-100">
+    <div className="min-h-screen pt-24 pb-20 bg-gradient-to-br from-[#feffe0] via-yellow-50 to-orange-50 relative overflow-hidden font-sans text-gray-800">
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      {/* Background Blobs */}
+      <div className="fixed top-0 left-0 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob -z-10"></div>
+      <div className="fixed top-0 right-0 w-96 h-96 bg-green-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000 -z-10"></div>
+      <div className="fixed -bottom-32 left-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-4000 -z-10"></div>
 
-        {/* Back Button */}
-        <Link to="/">
-          <button className="mb-6 flex items-center space-x-2 text-gray-700 hover:text-indigo-600 transition">
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
-          </button>
-        </Link>
+      <div className="max-w-2xl mx-auto px-6 relative z-10">
 
-        {/* Header */}
-        <div className="text-center mb-8">
-          <Bell className="w-12 h-12 text-indigo-600 mx-auto mb-3" />
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Notifications
-          </h1>
-          <p className="text-lg text-gray-600">
-            Stay updated with your queue status
-          </p>
+        {/* Header Section */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+             <Link to="/search">
+              <button className="p-3 bg-white/60 backdrop-blur-md border border-white/60 rounded-xl hover:bg-white hover:shadow-md transition-all group">
+                <ArrowLeft className="w-5 h-5 text-gray-600 group-hover:text-gray-900" />
+              </button>
+            </Link>
+            <div>
+              <h1 className="text-3xl font-black text-gray-900 tracking-tight">Notifications</h1>
+            </div>
+          </div>
+          
+          
         </div>
 
         {/* Notifications List */}
         <div className="space-y-4">
+          {mockNotifications.map((notification) => {
+            const styles = getNotificationStyle(notification.type);
+            
+            return (
+              <div
+                key={notification.id}
+                className={`group relative bg-white/70 backdrop-blur-xl border border-white/80 rounded-3xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ${!notification.read ? 'ring-2 ring-emerald-400/30' : ''}`}
+              >
+                {/* Unread Dot Indicator */}
+                {!notification.read && (
+                  <span className="absolute top-5 right-5 w-3 h-3 bg-[#10b981] rounded-full animate-pulse shadow-[0_0_10px_#10b981]"></span>
+                )}
 
-          {mockNotifications.map((notification) => (
-            <div
-              key={notification.id}
-              className={`bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 ${
-                !notification.read ? "border-l-4 border-indigo-600" : "opacity-80"
-              }`}
-            >
-              <div className="flex items-start space-x-4">
-
-                {/* Icon */}
-                <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
-                  {getIcon(notification.type)}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1">
-                  <div className="flex justify-between items-center mb-1">
-                    <h3 className="font-semibold text-gray-800">
-                      {notification.title}
-                    </h3>
-
-                    {!notification.read && (
-                      <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    )}
+                <div className="flex items-start gap-5">
+                  
+                  {/* Icon Box */}
+                  <div className={`shrink-0 w-14 h-14 ${styles.bgClass} ${styles.colorClass} rounded-2xl flex items-center justify-center shadow-inner`}>
+                    {styles.icon}
                   </div>
 
-                  <p className="text-gray-600 mb-2">
-                    {notification.message}
-                  </p>
+                  {/* Content */}
+                  <div className="flex-1 pt-1">
+                    <div className="flex justify-between items-start mb-1 pr-6">
+                      <h3 className={`font-bold text-lg ${!notification.read ? 'text-gray-900' : 'text-gray-600'}`}>
+                        {notification.title}
+                      </h3>
+                    </div>
 
-                  <div className="text-sm text-gray-500">
-                    {notification.time}
+                    <p className="text-gray-500 leading-relaxed text-sm mb-3">
+                      {notification.message}
+                    </p>
+
+                    <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-wide">
+                      <Clock className="w-3 h-3" />
+                      {notification.time}
+                    </div>
                   </div>
                 </div>
-
               </div>
-            </div>
-          ))}
-
+            );
+          })}
         </div>
 
         {/* Empty State */}
         {mockNotifications.length === 0 && (
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-12 text-center mt-6">
-            <div className="text-5xl mb-4">🔔</div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              No Notifications
+          <div className="bg-white/50 backdrop-blur-md rounded-[2.5rem] p-12 text-center mt-10 border border-white/50 shadow-lg">
+            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
+              🔔
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">
+              All caught up!
             </h3>
-            <p className="text-gray-600">
-              You're all caught up!
+            <p className="text-gray-500">
+              You have no new notifications at the moment.
             </p>
           </div>
         )}
 
-        {/* Mark All as Read */}
-        {mockNotifications.some((n) => !n.read) && (
-          <div className="mt-6 text-center">
-            <button className="px-8 py-3 bg-indigo-600 text-white rounded-full font-medium hover:bg-indigo-700 transition">
-              Mark All as Read
-            </button>
-          </div>
-        )}
-
       </div>
+
+      <style>{`
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   );
 }

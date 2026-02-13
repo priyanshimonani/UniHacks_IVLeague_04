@@ -66,12 +66,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-[#feffe0] via-yellow-50 to-orange-50 text-gray-800 overflow-hidden relative">
 
-      {/* Navbar */}
-      <nav className="flex justify-between items-center px-10 py-5 bg-white/60 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all hover:bg-white/80">
-        <h1 className="text-2xl font-bold text-[#10b981] tracking-wide cursor-pointer hover:scale-105 transition-transform">
-          QueueNest
-        </h1>
-      </nav>
+  
 
       {/* Hero Section */}
       <section className="relative px-6 py-20 lg:py-32 max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[85vh] text-center">
