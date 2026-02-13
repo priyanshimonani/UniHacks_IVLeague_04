@@ -152,7 +152,7 @@ form h3{
     font-weight: 300;
 }
 #loginform ::placeholder{
-    color: #e5e5e5;
+    color: #332e2e;
 }
 #loginform button{
     margin-top: 50px;

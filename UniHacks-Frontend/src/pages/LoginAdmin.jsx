@@ -1,37 +1,36 @@
 import React, { useState } from 'react'
 import axios from "axios"
 
-const SignUp = () => {
+const Login = () => {
 
   // 🔹 STATE
-  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState("")   
   const [password, setPassword] = useState("")
 
-  // 🔹 HANDLE SIGNUP
-  const handleSignup = async () => {
+  // 🔹 HANDLE LOGIN
+  const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "http://localhost:5000/api/auth/loginadmin",
         {
-          name,
           email,
-          phone,   
           password
         }
       )
 
-      alert("Signup successful ✅ Please login")
-      window.location.href = "/login"
+      localStorage.setItem("token", res.data.token)
+window.location.href = "/"
+
+      // Optional redirect
+      // window.location.href = "/dashboard"
 
     } catch (err) {
-      alert(err.response?.data?.message || "Something went wrong")
+      alert(err.response?.data?.message || "Invalid credentials")
     }
   }
 
   return (
-    <div>
+    <div className='mr-2 ml-2'>
       <div className='flex justify-center split-text-container'>
         <h1 className="title1 mb-4 text-part left mr-2"> Uni </h1>
         <h1 className="title1 mb-4 text-part right text-white!"> Hacks</h1><br/>
@@ -44,19 +43,8 @@ const SignUp = () => {
         </div>
 
         <form id='loginform'>
-          <h3 className='title1'>Sign Up</h3>
+          <h3 className='title1'>Login</h3>
 
-          {/* 🔹 NAME */}
-          <label>Username</label>
-          <input
-            type='text'
-            placeholder='Username'
-            className='container'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-          {/* 🔹 EMAIL */}
           <label>Email</label>
           <input
             type='text'
@@ -66,17 +54,6 @@ const SignUp = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          {/* 🔹 PHONE */}
-          <label>Phone Number</label>
-          <input
-            type='text'
-            placeholder='Phone Number'
-            className='container'
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-
-          {/* 🔹 PASSWORD */}
           <label>Password</label>
           <input
             type='password'
@@ -89,14 +66,18 @@ const SignUp = () => {
           <button
             type='button'
             className='admin-btn'
-            onClick={handleSignup}
+            onClick={handleLogin}
           >
-            Sign Up
+            Login
           </button>
+
+          <label>
+            To add organisation Click <a href='/SignupAdmin'><u>here</u></a>
+          </label>
         </form>
       </div>
     </div>
   )
 }
 
-export default SignUp
+export default Login

@@ -4,6 +4,8 @@ import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
 import Dashboard from "./pages/Dashboard"
 import ProtectedRoute from "./components/ProtectedRoute"
+import SignUpAdmin from "./pages/SignUpAdmin"
+import LoginAdmin from "./pages/LoginAdmin"
 
 function Layout() {
 
@@ -14,6 +16,8 @@ function Layout() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/signupadmin" element={<SignUpAdmin />} />
+        <Route path="/loginadmin" element={<LoginAdmin />} />
 
         {/* 🔐 PROTECTED ROUTE */}
         <Route 

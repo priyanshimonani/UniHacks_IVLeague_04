@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from "axios"
 
-const SignUp = () => {
+const SignUpAdmin = () => {
 
   // 🔹 STATE
   const [name, setName] = useState("")
@@ -23,7 +23,7 @@ const SignUp = () => {
       )
 
       alert("Signup successful ✅ Please login")
-      window.location.href = "/login"
+      window.location.href = "/loginadmin"
 
     } catch (err) {
       alert(err.response?.data?.message || "Something went wrong")
@@ -99,4 +99,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default SignUpAdmin
