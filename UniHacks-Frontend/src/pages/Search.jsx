@@ -6,9 +6,9 @@ const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [offices, setOffices] = useState([]);
 
-  // ✅ Dummy Data (All Mumbai + Tags Added)
+  // ✅ Dummy Data (All Mumbai + Tags AddState Bank of Indiaed)
   const dummyOffices = [
-    { _id: "1", name: "State Bank of India", location: "Mumbai", tags: ["bank"], queueLength: 12, estimatedWaitTime: 25, currentToken: 104 },
+    { _id: "1", name: "SBI Main Branch", location: "Mumbai", tags: ["bank"], queueLength: 12, estimatedWaitTime: 25, currentToken: 104 },
     { _id: "2", name: "HDFC Bank Branch", location: "Mumbai", tags: ["bank"], queueLength: 8, estimatedWaitTime: 18, currentToken: 56 },
     { _id: "3", name: "ICICI Bank", location: "Mumbai", tags: ["bank"], queueLength: 15, estimatedWaitTime: 30, currentToken: 89 },
     { _id: "4", name: "City Care Hospital", location: "Mumbai", tags: ["hospital", "healthcare"], queueLength: 20, estimatedWaitTime: 40, currentToken: 210 },

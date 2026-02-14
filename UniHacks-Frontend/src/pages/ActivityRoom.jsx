@@ -259,7 +259,7 @@ export default function ActivityRoom() {
     <div className="min-h-screen bg-gradient-to-br from-[#feffe0] via-yellow-50 to-orange-50 p-8 ">
 
       <h1 className="text-4xl font-black text-center text-gray-800 mb-12 mt-30">
-        🎮 Activity Room
+         Activity Room
       </h1>
 
       <div className="grid md:grid-cols-2 gap-10">

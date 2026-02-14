@@ -94,7 +94,7 @@ export function JoinQueue() {
             SBI Main Branch
           </h1>
           <p className="text-gray-500 font-medium text-lg">
-            MG Road, Ahmedabad
+            Mumbai
           </p>
         </motion.div>
 

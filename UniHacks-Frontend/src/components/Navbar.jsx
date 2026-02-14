@@ -37,7 +37,7 @@ export default function Navbar() {
           <button
             onClick={() => {
               localStorage.removeItem("token");
-              window.location.href = "/login";
+              window.location.href = "/";
             }}
             className="relative hover:text-[#10b981] transition hover:-translate-y-1 bg-transparent border-none cursor-pointer">
             <LogOut className="w-5 h-5" />
