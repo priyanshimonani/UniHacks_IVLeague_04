@@ -70,7 +70,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-20 bg-gradient-to-br from-[#feffe0] via-yellow-50 to-orange-50 relative overflow-hidden font-sans text-gray-800">
+    <div className="min-h-screen pt-24 pb-20 bg-linear-to-br from-[#feffe0] via-yellow-50 to-orange-50 relative overflow-hidden font-sans text-gray-800">
 
       {/* Background Blobs */}
       <div className="fixed top-0 left-0 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob -z-10"></div>
