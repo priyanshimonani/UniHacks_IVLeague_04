@@ -3,6 +3,38 @@ import axios from "axios"
 
 export default function ActivityRoom() {
 
+  /* ---------------- MOCK NEWS DATA (Fallback) ---------------- */
+  const mockNewsData = [
+    {
+      title: "Major drug bust in city center; 3 arrested",
+      description: "Police seized 50kg of narcotics in a raid conducted late last night. The operation was part of a city-wide crackdown on illegal substances.",
+      link: "#",
+      image_url: null,
+      source_id: "local_news"
+    },
+    {
+      title: "Cybercrime unit warns of new phishing scam",
+      description: "A sophisticated phishing campaign targeting bank customers has been identified. Experts advise users not to click on suspicious links.",
+      link: "#",
+      image_url: null,
+      source_id: "tech_daily"
+    },
+    {
+      title: "Traffic accident causes delays on highway",
+      description: "A multi-vehicle collision has blocked two lanes on the main highway. Commuters are advised to take alternate routes.",
+      link: "#",
+      image_url: null,
+      source_id: "traffic_alert"
+    },
+    {
+      title: "Local community celebrates festival peacefully",
+      description: "Despite security concerns, the annual festival concluded without incident, thanks to effective policing and community cooperation.",
+      link: "#",
+      image_url: null,
+      source_id: "community_voice"
+    }
+  ];
+
   /* ---------------- NEWS SECTION ---------------- */
 
   const [newsData, setNewsData] = useState([])
@@ -30,16 +62,20 @@ export default function ActivityRoom() {
               q: "news",
               country: "in",
               language: selectedLanguage,
-              category: "crime",
+              
             },
           }
         )
 
         setNewsData(response.data.results || [])
         setLoadingNews(false)
-      } catch {
-        setError("Error fetching news")
+      } catch (err) {
+        console.error("Error fetching news:", err)
+        // Fallback to mock data
+        setNewsData(mockNewsData)
         setLoadingNews(false)
+        // Only set error if we want to show a message, but here we show fallback
+        // setError("Showing offline news") 
       }
     }
 
@@ -126,12 +162,12 @@ export default function ActivityRoom() {
 
   const calculateWinner = (squares) => {
     const lines = [
-      [0,1,2],[3,4,5],[6,7,8],
-      [0,3,6],[1,4,7],[2,5,8],
-      [0,4,8],[2,4,6]
+      [0, 1, 2], [3, 4, 5], [6, 7, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],
+      [0, 4, 8], [2, 4, 6]
     ]
     for (let line of lines) {
-      const [a,b,c] = line
+      const [a, b, c] = line
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
         return squares[a]
       }
@@ -147,9 +183,9 @@ export default function ActivityRoom() {
     const win = calculateWinner(newBoard)
     if (win) return setWinner(win)
 
-    const empty = newBoard.map((v,i)=> v===null?i:null).filter(v=>v!==null)
+    const empty = newBoard.map((v, i) => v === null ? i : null).filter(v => v !== null)
     if (empty.length === 0) return
-    const random = empty[Math.floor(Math.random()*empty.length)]
+    const random = empty[Math.floor(Math.random() * empty.length)]
     newBoard[random] = "O"
     setBoard([...newBoard])
     const botWin = calculateWinner(newBoard)
@@ -163,7 +199,7 @@ export default function ActivityRoom() {
 
   /* ---------------- MEMORY GAME ---------------- */
 
-  const emojis = ["🍎","🍌","🍇","🍒","🍉","🥝","🍍","🍑"]
+  const emojis = ["🍎", "🍌", "🍇", "🍒", "🍉", "🥝", "🍍", "🍑"]
   const shuffledCards = [...emojis, ...emojis]
     .sort(() => Math.random() - 0.5)
 
@@ -187,8 +223,8 @@ export default function ActivityRoom() {
 
   /* ---------------- QUICK MATH ---------------- */
 
-  const [num1] = useState(Math.floor(Math.random()*10))
-  const [num2] = useState(Math.floor(Math.random()*10))
+  const [num1] = useState(Math.floor(Math.random() * 10))
+  const [num2] = useState(Math.floor(Math.random() * 10))
   const [answer, setAnswer] = useState("")
   const [mathResult, setMathResult] = useState("")
 
@@ -202,16 +238,16 @@ export default function ActivityRoom() {
 
   /* ---------------- ROCK PAPER SCISSORS ---------------- */
 
-  const choices = ["Rock","Paper","Scissors"]
+  const choices = ["Rock", "Paper", "Scissors"]
   const [rpsResult, setRpsResult] = useState("")
 
   const playRPS = (choice) => {
-    const bot = choices[Math.floor(Math.random()*3)]
+    const bot = choices[Math.floor(Math.random() * 3)]
     if (choice === bot) return setRpsResult("Draw!")
     if (
-      (choice==="Rock" && bot==="Scissors") ||
-      (choice==="Paper" && bot==="Rock") ||
-      (choice==="Scissors" && bot==="Paper")
+      (choice === "Rock" && bot === "Scissors") ||
+      (choice === "Paper" && bot === "Rock") ||
+      (choice === "Scissors" && bot === "Paper")
     ) {
       setRpsResult("You Win!")
     } else {
@@ -234,8 +270,8 @@ export default function ActivityRoom() {
         <div className="bg-white/70 p-6 rounded-3xl shadow-lg text-center">
           <h2 className="font-bold text-xl mb-4">Tic Tac Toe</h2>
           <div className="grid grid-cols-3 gap-2 w-48 mx-auto">
-            {board.map((val,i)=>(
-              <button key={i} onClick={()=>handleMove(i)}
+            {board.map((val, i) => (
+              <button key={i} onClick={() => handleMove(i)}
                 className="h-14 bg-green-100 text-2xl font-bold rounded-lg">
                 {val}
               </button>
@@ -256,8 +292,8 @@ export default function ActivityRoom() {
         <div className="bg-white/70 p-6 rounded-3xl shadow-lg text-center">
           <h2 className="font-bold text-xl mb-4">Memory Match</h2>
           <div className="grid grid-cols-4 gap-2">
-            {memoryCards.map((card,index)=>(
-              <button key={index} onClick={()=>handleFlip(index)}
+            {memoryCards.map((card, index) => (
+              <button key={index} onClick={() => handleFlip(index)}
                 className="h-14 bg-yellow-100 text-xl rounded-lg">
                 {flipped.includes(index) || matched.includes(index) ? card : "❓"}
               </button>
@@ -270,8 +306,8 @@ export default function ActivityRoom() {
           <h2 className="font-bold text-xl mb-4">Quick Math</h2>
           <p className="text-lg mb-4">{num1} + {num2} = ?</p>
           <input value={answer}
-            onChange={(e)=>setAnswer(e.target.value)}
-            className="border p-2 rounded-lg text-center"/>
+            onChange={(e) => setAnswer(e.target.value)}
+            className="border p-2 rounded-lg text-center" />
           <button onClick={checkMath}
             className="ml-2 px-4 py-2 bg-green-300 rounded-lg">
             Check
@@ -283,9 +319,9 @@ export default function ActivityRoom() {
         <div className="bg-white/70 p-6 rounded-3xl shadow-lg text-center">
           <h2 className="font-bold text-xl mb-4">Rock Paper Scissors</h2>
           <div className="flex justify-center gap-3">
-            {choices.map(choice=>(
+            {choices.map(choice => (
               <button key={choice}
-                onClick={()=>playRPS(choice)}
+                onClick={() => playRPS(choice)}
                 className="px-3 py-2 bg-orange-200 rounded-lg">
                 {choice}
               </button>
@@ -307,7 +343,7 @@ export default function ActivityRoom() {
             onChange={handleLanguageChange}
             className="border rounded p-1"
           >
-            {languages.map(lang=>(
+            {languages.map(lang => (
               <option key={lang.code} value={lang.code}>
                 {lang.label}
               </option>
@@ -321,15 +357,15 @@ export default function ActivityRoom() {
           <p>{error}</p>
         ) : (
           <ul className="space-y-4">
-            {newsData.map((item,index)=>(
+            {newsData.map((item, index) => (
               <li
                 key={index}
-                onClick={()=>handleNewsClick(item)}
+                onClick={() => handleNewsClick(item)}
                 className="border-b pb-3 cursor-pointer hover:bg-yellow-50 p-2 rounded-lg"
               >
                 <p className="font-semibold">{item.title}</p>
                 <p className="text-sm text-gray-600">
-                  {item.description?.slice(0,100)}...
+                  {item.description?.slice(0, 100)}...
                 </p>
               </li>
             ))}
