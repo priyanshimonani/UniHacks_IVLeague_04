@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Users, Clock, Layers, Plus, Play, Pause } from "lucide-react";
+import { Users, Clock, Layers, Plus, Play, Pause, Settings } from "lucide-react";
 
 export default function AdminDashboard() {
   const [data, setData] = useState({
@@ -70,94 +70,169 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-yellow-50 to-green-100 px-6 py-10">
+    <div className="min-h-screen pt-24 pb-20 bg-linear-to-br from-[#feffe0] via-yellow-50 to-orange-50 relative overflow-hidden font-sans text-gray-800">
 
-      {/* Header */}
-      <div className="max-w-6xl mx-auto mb-10">
-        <h1 className="text-4xl font-bold text-green-700">
-          Admin Dashboard
-        </h1>
-        <p className="text-gray-600 mt-2">
-          Manage queues and offices easily
-        </p>
-      </div>
+      {/* Background Blobs */}
+      <div className="fixed top-0 left-0 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob -z-10"></div>
+      <div className="fixed top-0 right-0 w-96 h-96 bg-green-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000 -z-10"></div>
+      <div className="fixed -bottom-32 left-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-4000 -z-10"></div>
 
-      {/* Stats */}
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 mb-10">
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
 
-        <div className="bg-white rounded-2xl shadow-md p-6">
-          <div className="flex justify-between mb-4">
-            <Layers className="text-green-600" />
-            <span className="text-sm text-gray-500">Active Queues</span>
-          </div>
-          <h2 className="text-3xl font-bold">{data.activeQueues}</h2>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-md p-6">
-          <div className="flex justify-between mb-4">
-            <Users className="text-green-600" />
-            <span className="text-sm text-gray-500">Total Waiting</span>
-          </div>
-          <h2 className="text-3xl font-bold">{data.totalWaiting}</h2>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-md p-6">
-          <div className="flex justify-between mb-4">
-            <Clock className="text-green-600" />
-            <span className="text-sm text-gray-500">Avg Service Time</span>
-          </div>
-          <h2 className="text-3xl font-bold">{data.avgServiceTime} min</h2>
-        </div>
-
-      </div>
-
-      {/* Queue Controls */}
-      <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-md p-6 mb-10">
-
-        <h2 className="text-xl font-semibold mb-6 text-gray-700">
-          Queue Controls
-        </h2>
-
-        <div className="flex flex-wrap gap-4">
-
-          {/* Call Next */}
-          <button
-            onClick={handleCallNext}
-            className="flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 transition"
-          >
-            <Play size={18} />
-            Call Next
-          </button>
-
-          {/* Pause Queue */}
-          <button
-            onClick={handlePauseQueue}
-            className="flex items-center gap-2 bg-yellow-500 text-white px-6 py-3 rounded-xl hover:bg-yellow-600 transition"
-          >
-            <Pause size={18} />
-            {paused ? "Resume Queue" : "Pause Queue"}
-          </button>
-
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6">
-
-        <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl p-8 shadow-md hover:scale-[1.02] transition cursor-pointer">
-          <h3 className="text-xl font-semibold mb-2">Manage Queues</h3>
-          <p>Control live queues and call next tokens</p>
-        </div>
-
-        <div className="bg-gradient-to-r from-yellow-400 to-green-400 text-white rounded-2xl p-8 shadow-md hover:scale-[1.02] transition cursor-pointer flex justify-between">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div>
-            <h3 className="text-xl font-semibold mb-2">Add New Office</h3>
-            <p>Register a new office location</p>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 border border-emerald-200 text-[#10b981] text-xs font-bold uppercase tracking-wide mb-3">
+              <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+              Live System Status
+            </div>
+            <h1 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">
+              Admin Workspace
+            </h1>
+            <p className="text-gray-500 font-medium mt-2 text-lg">
+              Manage queues, call tokens, and monitor venue traffic.
+            </p>
           </div>
-          <Plus size={30} />
+          
+          <div className="flex gap-3">
+             <button className="p-3 bg-white/60 backdrop-blur-md border border-white/60 text-gray-600 rounded-xl shadow-sm hover:shadow-md hover:text-[#10b981] transition-all">
+                <Settings className="w-5 h-5" />
+             </button>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid md:grid-cols-3 gap-6 mb-10">
+
+          <div className="bg-white/70 backdrop-blur-xl border border-white/80 rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all group">
+            <div className="flex justify-between items-start mb-4">
+              <div className="w-14 h-14 bg-emerald-100 text-[#10b981] rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Layers className="w-7 h-7" />
+              </div>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Active</span>
+            </div>
+            <div className="text-sm font-bold text-gray-400 uppercase tracking-wide mb-1">Active Queues</div>
+            <h2 className="text-5xl font-black text-gray-800">{data.activeQueues}</h2>
+          </div>
+
+          <div className="bg-white/70 backdrop-blur-xl border border-white/80 rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all group">
+            <div className="flex justify-between items-start mb-4">
+              <div className="w-14 h-14 bg-indigo-100 text-indigo-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Users className="w-7 h-7" />
+              </div>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Waiting</span>
+            </div>
+            <div className="text-sm font-bold text-gray-400 uppercase tracking-wide mb-1">Total Waiting</div>
+            <h2 className="text-5xl font-black text-gray-800">{data.totalWaiting}</h2>
+          </div>
+
+          <div className="bg-white/70 backdrop-blur-xl border border-white/80 rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all group">
+            <div className="flex justify-between items-start mb-4">
+              <div className="w-14 h-14 bg-amber-100 text-amber-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Clock className="w-7 h-7" />
+              </div>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Time</span>
+            </div>
+            <div className="text-sm font-bold text-gray-400 uppercase tracking-wide mb-1">Avg Service Time</div>
+            <div className="flex items-baseline gap-2">
+              <h2 className="text-5xl font-black text-gray-800">{data.avgServiceTime}</h2>
+              <span className="text-lg font-bold text-gray-400">min</span>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Queue Controls */}
+        <div className="bg-white/60 backdrop-blur-xl border border-white/60 rounded-[2rem] p-8 shadow-xl mb-10">
+          
+          <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#10b981] rounded-full"></span>
+            Queue Controls
+          </h2>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            
+            {/* Call Next Button */}
+            <button
+              onClick={handleCallNext}
+              className="flex-1 group relative overflow-hidden bg-gray-900 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-lg shadow-gray-900/20 hover:bg-[#10b981] hover:shadow-emerald-500/30 transition-all duration-300 flex items-center justify-center gap-3"
+            >
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <Play className="w-6 h-6 relative z-10 fill-current" />
+              <span className="relative z-10">Call Next Token</span>
+            </button>
+
+            {/* Pause Queue Button */}
+            <button
+              onClick={handlePauseQueue}
+              className={`flex-1 px-8 py-4 rounded-2xl font-bold text-lg shadow-sm border-2 transition-all duration-300 flex items-center justify-center gap-3 ${
+                paused 
+                  ? "bg-amber-500 text-white border-amber-500 hover:bg-amber-600 shadow-amber-500/30" 
+                  : "bg-white text-amber-600 border-amber-200 hover:bg-amber-50 hover:border-amber-300"
+              }`}
+            >
+              {paused ? (
+                <>
+                  <Play className="w-6 h-6" /> Resume Queue
+                </>
+              ) : (
+                <>
+                  <Pause className="w-6 h-6" /> Pause Queue
+                </>
+              )}
+            </button>
+
+          </div>
+        </div>
+
+        {/* Action Cards */}
+        <div className="grid md:grid-cols-2 gap-6">
+
+          <div className="group bg-gradient-to-br from-[#10b981] to-emerald-500 text-white rounded-[2rem] p-8 shadow-xl shadow-emerald-500/20 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/30 transition-all cursor-pointer relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:scale-150 transition-transform duration-700"></div>
+            <div className="relative z-10">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6">
+                 <Layers className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-2">Manage Queues</h3>
+              <p className="text-emerald-50 font-medium">Control live queues, edit details, and oversee daily venue operations.</p>
+            </div>
+          </div>
+
+          <div className="group bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-[2rem] p-8 shadow-xl shadow-gray-900/20 hover:-translate-y-1 hover:shadow-2xl hover:shadow-gray-900/30 transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute bottom-0 right-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl -mr-10 -mb-10 group-hover:scale-150 transition-transform duration-700"></div>
+            <div className="relative z-10 flex justify-between items-start">
+              <div>
+                <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6">
+                   <Plus className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">Add New Office</h3>
+                <p className="text-gray-400 font-medium">Register a new office, bank, or hospital branch to the network.</p>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
+
+      <style>{`
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   );
 }

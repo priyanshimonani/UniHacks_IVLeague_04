@@ -32,11 +32,7 @@ const SignUpAdmin = () => {
 
   return (
     <div>
-      <div className='flex justify-center split-text-container'>
-        <h1 className="title1 mb-4 text-part left mr-2"> Uni </h1>
-        <h1 className="title1 mb-4 text-part right text-white!"> Hacks</h1><br/>
-      </div>
-
+      
       <div id='new login'>
         <div className="backgroundlogin">
           <div className="shapelogin"></div>
