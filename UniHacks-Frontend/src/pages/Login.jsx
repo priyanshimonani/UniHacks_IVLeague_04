@@ -31,8 +31,6 @@ window.location.href = "/"
 
   return (
     <div className='mr-2 ml-2 mt-20'>
-      
-
       <div id='new login'>
         <div className="backgroundlogin">
           <div className="shapelogin"></div>
