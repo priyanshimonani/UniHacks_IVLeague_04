@@ -30,11 +30,8 @@ window.location.href = "/"
   }
 
   return (
-    <div className='mr-2 ml-2'>
-      <div className='flex justify-center split-text-container'>
-        <h1 className="title1 mb-4 text-part left mr-2"> Uni </h1>
-        <h1 className="title1 mb-4 text-part right text-white!"> Hacks</h1><br/>
-      </div>
+    <div className='mr-2 ml-2 mt-20'>
+      
 
       <div id='new login'>
         <div className="backgroundlogin">

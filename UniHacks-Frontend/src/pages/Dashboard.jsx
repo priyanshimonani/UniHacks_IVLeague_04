@@ -102,9 +102,12 @@ const Dashboard = () => {
                 <div className="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-300 group-hover:scale-150 group-hover:bg-emerald-600/20"></div>
               </button>
             </a>
-            <button className="secondary-btn bg-white/50 backdrop-blur-sm hover:bg-white">
+            <a href='/signupadmin'>
+              <button className="secondary-btn bg-white/50 backdrop-blur-sm hover:bg-white">
               Admin Panel
             </button>
+            </a>
+            
           </div>
 
         </div>
