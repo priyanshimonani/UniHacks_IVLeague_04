@@ -3,6 +3,7 @@ import Queue from "../models/Queue.js";
 
 export const createOrUpdateOffice = async (req, res) => {
   try {
+    // test
     const adminId = req.user.id;
     const { name, location, operatingHours, counters } = req.body;
 
