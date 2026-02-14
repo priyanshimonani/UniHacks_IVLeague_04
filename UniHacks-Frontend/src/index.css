@@ -134,6 +134,7 @@ body{
     );
     left: -60px;
     top: -40px;
+    animation: slideFromLeft 1.5s ease-out forwards;
 }
 .shapelogin:last-child{
     background: linear-gradient(
@@ -143,6 +144,32 @@ body{
     );
     right: -30px;
     bottom: -80px;
+     animation: slideFromRight 1.5s ease-out forwards;
+    animation-delay: 0.3s;
+}
+
+/* LEFT ENTRY */
+@keyframes slideFromLeft {
+    0% {
+        transform: translateX(-300px) scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0px) scale(1);
+        opacity: 1;
+    }
+}
+
+/* RIGHT ENTRY */
+@keyframes slideFromRight {
+    0% {
+        transform: translateX(300px) scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0px) scale(1);
+        opacity: 1;
+    }
 }
 
 form{

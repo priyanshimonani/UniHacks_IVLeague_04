@@ -30,7 +30,7 @@ export default function ActivityRoom() {
               q: "news",
               country: "in",
               language: selectedLanguage,
-              category: "crime",
+              
             },
           }
         )
@@ -298,7 +298,7 @@ export default function ActivityRoom() {
 
       {/* NEWS SECTION */}
       <div className="mt-16 bg-white/70 p-8 rounded-3xl shadow-lg">
-        <h2 className="text-2xl font-bold mb-6">📰 Latest Crime News</h2>
+        <h2 className="text-2xl font-bold mb-6">📰 Latest News</h2>
 
         <div className="mb-6">
           <label className="mr-2 font-semibold">Select Language:</label>
