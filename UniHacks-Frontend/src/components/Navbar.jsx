@@ -19,6 +19,9 @@ export default function Navbar() {
           <Link to="/search" className="hover:text-[#10b981] transition hover:scale-105">
             Home
           </Link>
+          <Link to="/ar" className="hover:text-[#10b981] transition hover:scale-105">
+            Activity Room
+          </Link>
 
         </div>
 

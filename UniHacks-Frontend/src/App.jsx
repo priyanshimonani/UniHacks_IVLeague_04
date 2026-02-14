@@ -12,7 +12,7 @@ import Navbar from "./components/Navbar"
 import AdminDashboard from "./pages/Admin-Dashboard"
 import Notifications from "./pages/Notifications"
 import { TokenSwap } from "./pages/User-TokenSwap"
-
+import ActivityRoom from "./pages/ActivityRoom"
 
 function Layout() {
   return (
@@ -26,6 +26,7 @@ function Layout() {
         <Route path="/signupadmin" element={<SignUpAdmin />} />
         <Route path="/loginadmin" element={<LoginAdmin />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/ar" element={<ActivityRoom />} />
         {/* <Route path="/profile" element={<Profile />} /> */}
         <Route path="/notifications" element={<Notifications />} />
          <Route path="/joinqueue" element={
