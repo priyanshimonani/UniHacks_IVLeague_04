@@ -1,18 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [offices, setOffices] = useState([]);
+
+  // ✅ Dummy Data (All Mumbai + Tags Added)
+  const dummyOffices = [
+    { _id: "1", name: "State Bank of India", location: "Mumbai", tags: ["bank"], queueLength: 12, estimatedWaitTime: 25, currentToken: 104 },
+    { _id: "2", name: "HDFC Bank Branch", location: "Mumbai", tags: ["bank"], queueLength: 8, estimatedWaitTime: 18, currentToken: 56 },
+    { _id: "3", name: "ICICI Bank", location: "Mumbai", tags: ["bank"], queueLength: 15, estimatedWaitTime: 30, currentToken: 89 },
+    { _id: "4", name: "City Care Hospital", location: "Mumbai", tags: ["hospital", "healthcare"], queueLength: 20, estimatedWaitTime: 40, currentToken: 210 },
+    { _id: "5", name: "Apollo Clinic", location: "Mumbai", tags: ["hospital", "clinic"], queueLength: 6, estimatedWaitTime: 12, currentToken: 23 },
+    { _id: "6", name: "Lilavati Hospital", location: "Mumbai", tags: ["hospital"], queueLength: 18, estimatedWaitTime: 35, currentToken: 145 },
+    { _id: "7", name: "Passport Office Mumbai", location: "Mumbai", tags: ["government"], queueLength: 9, estimatedWaitTime: 20, currentToken: 72 },
+    { _id: "8", name: "Municipal Corporation Office", location: "Mumbai", tags: ["government"], queueLength: 5, estimatedWaitTime: 10, currentToken: 34 },
+    { _id: "9", name: "Income Tax Office", location: "Mumbai", tags: ["government"], queueLength: 14, estimatedWaitTime: 28, currentToken: 101 },
+    { _id: "10", name: "RTO Mumbai Central", location: "Mumbai", tags: ["government", "transport"], queueLength: 10, estimatedWaitTime: 22, currentToken: 67 },
+    { _id: "11", name: "Mumbai University", location: "Mumbai", tags: ["education", "college"], queueLength: 7, estimatedWaitTime: 15, currentToken: 48 },
+    { _id: "12", name: "Government Engineering College", location: "Mumbai", tags: ["education", "college"], queueLength: 11, estimatedWaitTime: 24, currentToken: 76 },
+    { _id: "13", name: "Central Library Mumbai", location: "Mumbai", tags: ["education", "library"], queueLength: 4, estimatedWaitTime: 8, currentToken: 12 },
+    { _id: "14", name: "Police Station Andheri", location: "Mumbai", tags: ["government", "police"], queueLength: 3, estimatedWaitTime: 6, currentToken: 9 },
+    { _id: "15", name: "Electricity Board Office", location: "Mumbai", tags: ["government", "utilities"], queueLength: 16, estimatedWaitTime: 32, currentToken: 120 },
+    { _id: "16", name: "Water Supply Department", location: "Mumbai", tags: ["government", "utilities"], queueLength: 13, estimatedWaitTime: 27, currentToken: 88 },
+    { _id: "17", name: "LIC Branch Mumbai", location: "Mumbai", tags: ["insurance"], queueLength: 6, estimatedWaitTime: 14, currentToken: 41 },
+    { _id: "18", name: "Urban Health Center", location: "Mumbai", tags: ["hospital", "healthcare"], queueLength: 21, estimatedWaitTime: 45, currentToken: 167 },
+    { _id: "19", name: "Post Office Bandra", location: "Mumbai", tags: ["government"], queueLength: 5, estimatedWaitTime: 9, currentToken: 19 },
+    { _id: "20", name: "District Education Office", location: "Mumbai", tags: ["education", "government"], queueLength: 17, estimatedWaitTime: 33, currentToken: 132 }
+  ];
 
   useEffect(() => {
     const fetchOffices = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/offices");
         const data = await res.json();
-        setOffices(data);
+
+        if (data && data.length > 0) {
+          setOffices(data);
+        } else {
+          setOffices(dummyOffices);
+        }
       } catch (err) {
         console.error("Error fetching offices:", err);
+        setOffices(dummyOffices);
       }
     };
 
@@ -21,138 +52,151 @@ const Search = () => {
 
   const filteredOffices = offices.filter((office) =>
     office.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    office.location.toLowerCase().includes(searchQuery.toLowerCase())
+    office.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    office.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (
-    // MAIN PAGE CONTAINER: Full height, gradient background, vertical layout
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#feffe0] via-yellow-50 to-orange-50 text-gray-800 relative overflow-x-hidden flex flex-col">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#feffe0] via-yellow-50 to-orange-50 text-gray-800 relative   overflow-x-hidden flex flex-col">
       
-      {/* Background Blobs (Decoration) */}
+      {/* Background Blobs */}
       <div className="fixed top-0 left-0 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob -z-10"></div>
       <div className="fixed top-0 right-0 w-96 h-96 bg-green-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000 -z-10"></div>
 
-      {/* CONTENT CONTAINER: Centered with padding */}
-      <div className="container mx-auto px-4 py-12 md:py-20 max-w-7xl relative z-10 flex flex-col items-center mt-30">
+      <div className="container mx-auto mt-30 px-4 py-16 md:py-24 max-w-7xl relative z-10 flex flex-col items-center">
         
-        {/* 1. HEADER SECTION (Stacked vertically) */}
-        <div className="text-center w-full mb-12 animate-fade-in-down">
+        {/* Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center w-full mb-12"
+        >
           <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-4 text-gray-900">
-            Find Your <span className="text-[#10b981]">Office</span>
+            Find Your <span className="text-[#10b981]">Queue</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto">
             Search for banks, hospitals, colleges, and government offices below.
           </p>
-        </div>
+        </motion.div>
 
-        {/* 2. SEARCH BAR (Wide and centered) */}
-        <div className="w-full max-w-3xl mb-16 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+        {/* Search Bar */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="w-full max-w-3xl mb-16"
+        >
           <div className="relative group">
-            {/* Glow effect behind search bar */}
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-300 to-teal-300 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
             
-            {/* Input Field */}
-            <div className="relative flex items-center bg-white rounded-full shadow-xl p-2 transition-all duration-300 transform group-hover:scale-[1.01]">
+            <div className="relative flex items-center bg-white/90 backdrop-blur-md border border-white rounded-full shadow-xl p-2 transition-all duration-300 focus-within:ring-2 focus-within:ring-[#10b981]/50">
               <span className="pl-6 text-gray-400">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
               </span>
               <input
                 type="text"
-                placeholder="Search office name or location..."
+                placeholder="Search office name, tag or location..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-4 py-4 text-lg text-gray-700 bg-transparent border-none outline-none focus:ring-0 placeholder-gray-400"
               />
-              <button className="bg-[#10b981] text-white px-8 py-3 rounded-full font-bold hover:bg-emerald-600 transition-colors shadow-md">
+              <button className="bg-[#10b981] text-white px-8 py-3 rounded-full font-bold shadow-md hover:bg-emerald-600 hover:shadow-lg transition-all active:scale-95">
                 Search
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* 3. RESULTS GRID (Full width) */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2">
-          {filteredOffices.map((office, index) => (
-            <div 
-              key={office._id} 
-              className="office-card group animate-slide-up flex flex-col"
-              style={{ animationDelay: `${index * 0.1 + 0.2}s` }}
+        {/* Grid Container */}
+        <motion.div layout className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2">
+          <AnimatePresence>
+            {filteredOffices.map((office) => (
+              <motion.div 
+                layout
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                transition={{ duration: 0.4, type: "spring", bounce: 0.3 }}
+                key={office._id} 
+                className="group flex flex-col bg-white/60 backdrop-blur-xl border border-white/80 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(16,185,129,0.15)] hover:-translate-y-1 hover:border-[#10b981]/30 transition-all duration-300"
+              >
+                {/* Card Header */}
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-800 group-hover:text-[#10b981] transition-colors line-clamp-1">
+                      {office.name}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <p className="text-sm text-gray-500 font-medium flex items-center">
+                         <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        {office.location}
+                      </p>
+                      <span className="text-gray-300">•</span>
+                      {/* Show first tag */}
+                      {office.tags && office.tags[0] && (
+                        <span className="px-2.5 py-0.5 bg-emerald-100/70 text-emerald-700 text-xs font-bold uppercase tracking-wider rounded-md border border-emerald-200">
+                          {office.tags[0]}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="bg-white/50 border border-white p-3 rounded-2xl text-center shadow-sm">
+                    <span className="block text-xs text-gray-400 uppercase font-bold tracking-wider mb-0.5">Queue Size</span>
+                    <strong className="text-xl text-gray-800">{office.queueLength}</strong>
+                  </div>
+                  <div className="bg-white/50 border border-white p-3 rounded-2xl text-center shadow-sm">
+                    <span className="block text-xs text-gray-400 uppercase font-bold tracking-wider mb-0.5">Est. Wait</span>
+                    <strong className="text-xl text-[#10b981]">~{office.estimatedWaitTime} <span className="text-sm">m</span></strong>
+                  </div>
+                  <div className="bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-100 p-3 rounded-2xl text-center col-span-2 flex justify-between items-center px-6">
+                    <span className="text-xs text-indigo-400 uppercase font-bold tracking-wider">Serving Token</span>
+                    <strong className="text-xl font-black text-indigo-600">#{office.currentToken}</strong>
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                <div className="mt-auto">
+                  <Link to={`/join/${office._id}`}>
+                    <button className="w-full py-3.5 rounded-xl bg-gray-900 text-white font-bold text-lg shadow-lg shadow-gray-900/20 group-hover:bg-[#10b981] group-hover:shadow-emerald-500/30 transition-all duration-300 active:scale-[0.98]">
+                      Join Queue
+                    </button>
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Empty State */}
+        <AnimatePresence>
+          {filteredOffices.length === 0 && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-center mt-12 w-full max-w-md mx-auto bg-white/50 backdrop-blur-md rounded-3xl p-8 border border-white/60 shadow-lg"
             >
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800 group-hover:text-[#10b981] transition-colors">
-                    {office.name}
-                  </h3>
-                  <p className="text-sm text-gray-500 font-medium flex items-center mt-1">
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    {office.location}
-                  </p>
-                </div>
-                <div className="bg-emerald-50 text-emerald-600 p-2 rounded-lg">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                </div>
+              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                🔍
               </div>
-
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <div className="bg-gray-50 p-3 rounded-xl text-center">
-                  <span className="block text-xs text-gray-400 uppercase font-bold tracking-wider">Queue</span>
-                  <strong className="text-lg text-gray-800">{office.queueLength}</strong>
-                </div>
-                <div className="bg-gray-50 p-3 rounded-xl text-center">
-                  <span className="block text-xs text-gray-400 uppercase font-bold tracking-wider">Wait</span>
-                  <strong className="text-lg text-[#10b981]">~{office.estimatedWaitTime} min</strong>
-                </div>
-                <div className="bg-gray-50 p-3 rounded-xl text-center col-span-2 flex justify-between items-center px-6">
-                  <span className="text-xs text-gray-400 uppercase font-bold tracking-wider">Current Token</span>
-                  <strong className="text-lg text-indigo-600">#{office.currentToken}</strong>
-                </div>
-              </div>
-
-              {/* Push button to bottom */}
-              <div className="mt-auto">
-                <Link to={`/join/${office._id}`}>
-                  <button className="w-full py-3 rounded-xl bg-gray-900 text-white font-bold text-lg hover:bg-[#10b981] hover:shadow-lg transition-all duration-300 transform group-hover:translate-y-[-2px]">
-                    Join Queue
-                  </button>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* 4. NO RESULTS MESSAGE (Centered below everything) */}
-        {filteredOffices.length === 0 && (
-          <div className="text-center mt-12 w-full animate-fade-in-down">
-            <div className="bg-white/40 backdrop-blur-md p-8 rounded-3xl inline-block border border-white/50 shadow-lg">
-              <svg className="w-24 h-24 mx-auto text-gray-400 mb-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-              <h2 className="text-2xl font-bold text-gray-700 mb-2">No offices found</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">No offices found</h2>
               <p className="text-gray-500">
-                We couldn't find "{searchQuery}". <br/> Try searching for a different location.
+                We couldn't find anything matching <span className="font-semibold text-gray-700">"{searchQuery}"</span>.
               </p>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
       </div>
 
       <style>{`
-        .office-card {
-          background: rgba(255, 255, 255, 0.7);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.6);
-          border-radius: 1.5rem;
-          padding: 1.5rem;
-          box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
-          transition: all 0.3s ease;
-        }
-        
-        .office-card:hover {
-          background: rgba(255, 255, 255, 0.95);
-          transform: translateY(-8px);
-          box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
-          border-color: #10b981;
-        }
-
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1); }
           33% { transform: translate(30px, -50px) scale(1.1); }
@@ -164,23 +208,6 @@ const Search = () => {
         }
         .animation-delay-2000 {
           animation-delay: 2s;
-        }
-        
-        @keyframes fade-in-down {
-          0% { opacity: 0; transform: translateY(-20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-down {
-          animation: fade-in-down 0.8s ease-out forwards;
-        }
-
-        @keyframes slide-up {
-          0% { opacity: 0; transform: translateY(30px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-slide-up {
-          opacity: 0;
-          animation: slide-up 0.6s ease-out forwards;
         }
       `}</style>
     </div>

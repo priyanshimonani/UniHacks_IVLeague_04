@@ -59,13 +59,16 @@ window.location.href = "/"
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button
+          <a href='/admindashboard'>
+            <button
             type='button'
             className='admin-btn'
             onClick={handleLogin}
           >
             Login
           </button>
+          </a>
+          
 
           <label>
             To add organisation Click <a href='/SignupAdmin'><u>here</u></a>

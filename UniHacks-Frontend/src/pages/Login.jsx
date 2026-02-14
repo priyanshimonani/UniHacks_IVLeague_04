@@ -58,13 +58,16 @@ window.location.href = "/"
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button
+          <a href='\search'>
+            <button
             type='button'
             className='admin-btn'
             onClick={handleLogin}
           >
             Login
           </button>
+          </a>
+          
 
           <label>
             Dont have an account? Click <a href='/Signup'><u>here</u></a>
