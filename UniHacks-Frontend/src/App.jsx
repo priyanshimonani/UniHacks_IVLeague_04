@@ -11,6 +11,7 @@ import { JoinQueue } from "./pages/User-JoinQueue"
 import Navbar from "./components/Navbar"
 import AdminDashboard from "./pages/Admin-Dashboard"
 import Notifications from "./pages/Notifications"
+import { TokenSwap } from "./pages/User-TokenSwap"
 
 
 function Layout() {
@@ -29,6 +30,7 @@ function Layout() {
         {/* <Route path="/profile" element={<Profile />} /> */}
         <Route path="/notifications" element={<Notifications />} />
          <Route path="/joinqueue" element={<JoinQueue />} />
+         <Route path="/tokenswap" element={<TokenSwap />} />
          <Route path="/admindashboard" element={<AdminDashboard />} />
 
       </Routes>
