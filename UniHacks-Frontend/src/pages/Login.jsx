@@ -19,7 +19,7 @@ const Login = () => {
       )
 
       localStorage.setItem("token", res.data.token)
-      window.location.href = "/joinqueue"
+      window.location.href = "/search"
 
       // Optional redirect
       // window.location.href = "/dashboard"
