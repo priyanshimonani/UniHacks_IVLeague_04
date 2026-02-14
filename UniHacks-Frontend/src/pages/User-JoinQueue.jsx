@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useNavigate } from "react-router-dom"
 import confetti from "canvas-confetti"
 
 export function JoinQueue() {
@@ -8,6 +9,26 @@ export function JoinQueue() {
   const yourToken = 148
   const [showSwap, setShowSwap] = useState(false)
   const [showLeave, setShowLeave] = useState(false)
+
+  const navigate = useNavigate()
+  const [swapMessage, setSwapMessage] = useState("")
+
+  const handleSwapRequest = () => {
+    // In a real application, you would send the swap request to the backend here
+    console.log("Sending swap request:", swapMessage);
+
+    // Simulating API call
+    setTimeout(() => {
+      setShowSwap(false);
+      // Navigate to the Token Swap page, optionally passing the message if needed
+      navigate('/tokenswap', {
+        state: {
+          newRequest: { message: swapMessage, timestamp: new Date() },
+          sourceToken: yourToken
+        }
+      });
+    }, 500);
+  };
 
   const peopleAhead = Math.max(yourToken - currentToken, 0)
   const estimatedWait = peopleAhead * 3
@@ -55,7 +76,7 @@ export function JoinQueue() {
       <div className="fixed -bottom-32 left-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-4000 -z-10"></div>
 
       {/* Sticky Bar */}
-      
+
 
       <div className="max-w-4xl mx-auto relative z-10">
 
@@ -67,7 +88,7 @@ export function JoinQueue() {
           className="text-center mb-14"
         >
           <div className="inline-block p-3 rounded-2xl bg-white/40 backdrop-blur-md border border-white/60 shadow-sm mb-4 mt-10">
-             <svg className="w-8 h-8 text-[#10b981] mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            <svg className="w-8 h-8 text-[#10b981] mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
           </div>
           <h1 className="text-4xl md:text-5xl font-black tracking-tight text-gray-900 mb-2">
             SBI Main Branch
@@ -88,8 +109,8 @@ export function JoinQueue() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-emerald-400/20 blur-[60px] rounded-full group-hover:bg-emerald-400/30 transition-all duration-700"></div>
 
           <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Your Token</p>
-          
-          <motion.div 
+
+          <motion.div
             key={currentToken}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -101,16 +122,16 @@ export function JoinQueue() {
 
           {/* Fancy Progress Bar */}
           <div className="relative w-full h-3 bg-gray-200/50 rounded-full overflow-hidden">
-             <motion.div 
-               className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full stripe-pattern"
-               initial={{ width: 0 }}
-               animate={{ width: `${100 - progress}%` }}
-               transition={{ type: "spring", stiffness: 50 }}
-             />
+            <motion.div
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full stripe-pattern"
+              initial={{ width: 0 }}
+              animate={{ width: `${100 - progress}%` }}
+              transition={{ type: "spring", stiffness: 50 }}
+            />
           </div>
           <div className="flex justify-between text-xs font-bold text-gray-400 mt-3 px-1">
-             <span>Queue Started</span>
-             <span>Your Turn</span>
+            <span>Queue Started</span>
+            <span>Your Turn</span>
           </div>
 
         </motion.div>
@@ -160,7 +181,7 @@ export function JoinQueue() {
             onClick={() => setShowSwap(true)}
             className="px-8 py-3.5 bg-white text-[#10b981] border-2 border-[#10b981] rounded-xl font-bold text-lg shadow-sm hover:bg-[#10b981] hover:text-white transition-colors"
           >
-            Request Swap 
+            Request Swap
           </motion.button>
 
           <motion.button
@@ -198,6 +219,8 @@ export function JoinQueue() {
               <textarea
                 placeholder="Ex: I'm running 5 mins late, can we swap?"
                 className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl mb-6 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#10b981] resize-none h-32"
+                value={swapMessage}
+                onChange={(e) => setSwapMessage(e.target.value)}
               />
 
               <div className="flex gap-3">
@@ -207,7 +230,10 @@ export function JoinQueue() {
                 >
                   Cancel
                 </button>
-                <button className="flex-1 py-3 bg-[#10b981] text-white rounded-xl font-bold shadow-lg shadow-green-200 hover:bg-emerald-600 transition-colors">
+                <button
+                  onClick={handleSwapRequest}
+                  className="flex-1 py-3 bg-[#10b981] text-white rounded-xl font-bold shadow-lg shadow-green-200 hover:bg-emerald-600 transition-colors"
+                >
                   Send Request
                 </button>
               </div>
