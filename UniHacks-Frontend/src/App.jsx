@@ -28,9 +28,17 @@ function Layout() {
         <Route path="/search" element={<Search />} />
         {/* <Route path="/profile" element={<Profile />} /> */}
         <Route path="/notifications" element={<Notifications />} />
-         <Route path="/joinqueue" element={<JoinQueue />} />
+         <Route path="/joinqueue" element={
+           <ProtectedRoute>
+             <JoinQueue />
+           </ProtectedRoute>
+         } />
          <Route path="/tokenswap" element={<TokenSwap />} />
-         <Route path="/admindashboard" element={<AdminDashboard />} />
+         <Route path="/admindashboard" element={
+           <ProtectedRoute>
+             <AdminDashboard />
+           </ProtectedRoute>
+         } />
 
       </Routes>
     </>

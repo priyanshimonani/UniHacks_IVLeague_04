@@ -58,15 +58,15 @@ const Search = () => {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-[#feffe0] via-yellow-50 to-orange-50 text-gray-800 relative   overflow-x-hidden flex flex-col">
-      
+
       {/* Background Blobs */}
       <div className="fixed top-0 left-0 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob -z-10"></div>
       <div className="fixed top-0 right-0 w-96 h-96 bg-green-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000 -z-10"></div>
 
       <div className="container mx-auto mt-30 px-4 py-16 md:py-24 max-w-7xl relative z-10 flex flex-col items-center">
-        
+
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -81,7 +81,7 @@ const Search = () => {
         </motion.div>
 
         {/* Search Bar */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -89,7 +89,7 @@ const Search = () => {
         >
           <div className="relative group">
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-300 to-teal-300 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
-            
+
             <div className="relative flex items-center bg-white/90 backdrop-blur-md border border-white rounded-full shadow-xl p-2 transition-all duration-300 focus-within:ring-2 focus-within:ring-[#10b981]/50">
               <span className="pl-6 text-gray-400">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,13 +114,13 @@ const Search = () => {
         <motion.div layout className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2">
           <AnimatePresence>
             {filteredOffices.map((office) => (
-              <motion.div 
+              <motion.div
                 layout
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
                 transition={{ duration: 0.4, type: "spring", bounce: 0.3 }}
-                key={office._id} 
+                key={office._id}
                 className="group flex flex-col bg-white/60 backdrop-blur-xl border border-white/80 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(16,185,129,0.15)] hover:-translate-y-1 hover:border-[#10b981]/30 transition-all duration-300"
               >
                 {/* Card Header */}
@@ -131,7 +131,7 @@ const Search = () => {
                     </h3>
                     <div className="flex items-center gap-2 mt-1.5">
                       <p className="text-sm text-gray-500 font-medium flex items-center">
-                         <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         {office.location}
                       </p>
                       <span className="text-gray-300">•</span>
@@ -163,11 +163,18 @@ const Search = () => {
 
                 {/* Action Button */}
                 <div className="mt-auto">
-                  <Link to={`/join/${office._id}`}>
-                    <button className="w-full py-3.5 rounded-xl bg-gray-900 text-white font-bold text-lg shadow-lg shadow-gray-900/20 group-hover:bg-[#10b981] group-hover:shadow-emerald-500/30 transition-all duration-300 active:scale-[0.98]">
-                      Join Queue
-                    </button>
-                  </Link>
+                  <button
+                    onClick={() => {
+                      const token = localStorage.getItem("token");
+                      if (token) {
+                        window.location.href = "/joinqueue";
+                      } else {
+                        window.location.href = "/login";
+                      }
+                    }}
+                    className="w-full py-3.5 rounded-xl bg-gray-900 text-white font-bold text-lg shadow-lg shadow-gray-900/20 group-hover:bg-[#10b981] group-hover:shadow-emerald-500/30 transition-all duration-300 active:scale-[0.98]">
+                    Join Queue
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -177,7 +184,7 @@ const Search = () => {
         {/* Empty State */}
         <AnimatePresence>
           {filteredOffices.length === 0 && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
@@ -193,7 +200,7 @@ const Search = () => {
             </motion.div>
           )}
         </AnimatePresence>
-        
+
       </div>
 
       <style>{`

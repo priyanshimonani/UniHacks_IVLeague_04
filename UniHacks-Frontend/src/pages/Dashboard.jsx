@@ -66,19 +66,19 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-[#feffe0] via-yellow-50 to-orange-50 text-gray-800 overflow-hidden relative">
 
-  
+
 
       {/* Hero Section */}
       <section className="relative px-6 py-20 lg:py-32 max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[85vh] text-center">
-        
+
         {/* Animated Background Blobs */}
         <div className="absolute top-0 -left-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"></div>
         <div className="absolute top-0 -right-4 w-72 h-72 bg-green-300 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000"></div>
         <div className="absolute -bottom-32 left-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000"></div>
 
         <div className="relative z-10 flex flex-col items-center">
-          
-          
+
+
 
           <h1 className="hero-title text-7xl md:text-9xl font-black tracking-tighter mb-6">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#059669] via-[#10b981] to-[#34d399] animate-gradient-x">
@@ -86,17 +86,17 @@ const Dashboard = () => {
             </span>
           </h1>
 
-          <p className="text-2xl md:text-4xl text-gray-700 font-bold mb-6 animate-slide-up" style={{animationDelay: '0.2s'}}>
+          <p className="text-2xl md:text-4xl text-gray-700 font-bold mb-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
             Wait Smart. <span className="text-[#10b981] underline decoration-wavy decoration-2 underline-offset-4">Not Long.</span>
           </p>
 
-          <p className="text-gray-500 mb-10 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto animate-slide-up" style={{animationDelay: '0.4s'}}>
-            Join virtual queues, track your live position, and get your time back. 
+          <p className="text-gray-500 mb-10 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            Join virtual queues, track your live position, and get your time back.
             The smartest way to handle lines is here.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6 animate-bounce-in" style={{animationDelay: '0.6s'}}>
-            <a href="\search">
+          <div className="flex flex-col sm:flex-row gap-6 animate-bounce-in" style={{ animationDelay: '0.6s' }}>
+            <a href="/search">
               <button className="primary-btn group relative overflow-hidden">
                 <span className="relative z-10">Join Queue Now →</span>
                 <div className="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-300 group-hover:scale-150 group-hover:bg-emerald-600/20"></div>
@@ -104,10 +104,10 @@ const Dashboard = () => {
             </a>
             <a href='/signupadmin'>
               <button className="secondary-btn bg-white/50 backdrop-blur-sm hover:bg-white">
-              Admin Panel
-            </button>
+                Admin Panel
+              </button>
             </a>
-            
+
           </div>
 
         </div>
@@ -140,11 +140,11 @@ const Dashboard = () => {
               <div className="feature-icon-wrapper mb-4 text-[#10b981] group-hover:text-white transition-colors duration-300">
                 {feature.icon}
               </div>
-              
+
               <h3 className="text-xl font-bold mb-2 text-gray-800 group-hover:text-white transition-colors duration-300">
                 {feature.title}
               </h3>
-              
+
               <p className="text-sm leading-relaxed text-gray-600 group-hover:text-white/90 transition-colors duration-300">
                 {feature.desc}
               </p>

@@ -6,18 +6,18 @@ const SignUpAdmin = () => {
   // 🔹 STATE
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState("")   
+  const [mobile, setMobile] = useState("")
   const [password, setPassword] = useState("")
 
   // 🔹 HANDLE SIGNUP
   const handleSignup = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "http://localhost:8080/api/auth/admin/register",
         {
           name,
           email,
-          phone,   
+          mobile,
           password
         }
       )
@@ -32,7 +32,7 @@ const SignUpAdmin = () => {
 
   return (
     <div>
-      
+
       <div id='new login'>
         <div className="backgroundlogin">
           <div className="shapelogin"></div>
@@ -62,14 +62,14 @@ const SignUpAdmin = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          {/* 🔹 PHONE */}
-          <label>Phone Number</label>
+          {/* 🔹 Mobile */}
+          <label>Mobile Number</label>
           <input
             type='text'
-            placeholder='Phone Number'
+            placeholder='Mobile Number'
             className='container'
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value)}
           />
 
           {/* 🔹 PASSWORD */}
@@ -89,6 +89,10 @@ const SignUpAdmin = () => {
           >
             Sign Up
           </button>
+
+          <label>
+            Already have an account? Click <a href='/loginadmin'><u>here</u></a>
+          </label>
         </form>
       </div>
     </div>

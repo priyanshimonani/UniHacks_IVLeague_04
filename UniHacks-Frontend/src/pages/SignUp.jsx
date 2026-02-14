@@ -6,18 +6,18 @@ const SignUp = () => {
   // 🔹 STATE
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState("")   
+  const [mobile, setMobile] = useState("")
   const [password, setPassword] = useState("")
 
   // 🔹 HANDLE SIGNUP
   const handleSignup = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/auth/register",
+        "http://localhost:8080/api/auth/user/register",
         {
           name,
           email,
-          phone,   
+          mobile,
           password
         }
       )
@@ -68,8 +68,8 @@ const SignUp = () => {
             type='text'
             placeholder='Phone Number'
             className='container'
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value)}
           />
 
           {/* 🔹 PASSWORD */}
@@ -89,6 +89,10 @@ const SignUp = () => {
           >
             Sign Up
           </button>
+
+          <label>
+            Already have an account? Click <a href='/login'><u>here</u></a>
+          </label>
         </form>
       </div>
     </div>

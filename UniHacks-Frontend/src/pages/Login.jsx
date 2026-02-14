@@ -11,7 +11,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/auth/login",
+        "http://localhost:8080/api/auth/user/login",
         {
           email,
           password
@@ -19,7 +19,7 @@ const Login = () => {
       )
 
       localStorage.setItem("token", res.data.token)
-window.location.href = "/"
+      window.location.href = "/joinqueue"
 
       // Optional redirect
       // window.location.href = "/dashboard"
@@ -58,19 +58,17 @@ window.location.href = "/"
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <a href='\search'>
-            <button
+          <button
             type='button'
             className='admin-btn'
             onClick={handleLogin}
           >
             Login
           </button>
-          </a>
-          
+
 
           <label>
-            Dont have an account? Click <a href='/Signup'><u>here</u></a>
+            Dont have an account? Click <a href='/signup'><u>here</u></a>
           </label>
         </form>
       </div>

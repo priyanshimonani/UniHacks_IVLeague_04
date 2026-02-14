@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Bell,LogOut } from "lucide-react";
+import { Bell, LogOut } from "lucide-react";
 
 export default function Navbar() {
   return (
     // changed: position fixed, high z-index, pointer-events trickery
     <div className="fixed top-0 left-0 right-0 z-100 flex justify-center pt-6 pointer-events-none">
-      
+
       <nav className="pointer-events-auto flex justify-between items-center px-6 py-3 md:px-10 md:py-4 bg-[#F7F3C7]/85 backdrop-blur-md  rounded-full w-[92%] max-w-6xl border border-white/50 transition-all duration-300">
 
         {/* Logo */}
@@ -31,10 +31,15 @@ export default function Navbar() {
           </Link>
 
           {/* Profile */}
-          <Link to="/" className="relative hover:text-[#10b981] transition hover:-translate-y-1">
+          <button
+            onClick={() => {
+              localStorage.removeItem("token");
+              window.location.href = "/login";
+            }}
+            className="relative hover:text-[#10b981] transition hover:-translate-y-1 bg-transparent border-none cursor-pointer">
             <LogOut className="w-5 h-5" />
-          </Link>
-          
+          </button>
+
 
         </div>
 

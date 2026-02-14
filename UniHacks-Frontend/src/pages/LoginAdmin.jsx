@@ -11,7 +11,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/loginadmin",
+        "http://localhost:8080/api/auth/admin/login",
         {
           email,
           password
@@ -19,7 +19,7 @@ const Login = () => {
       )
 
       localStorage.setItem("token", res.data.token)
-window.location.href = "/"
+      window.location.href = "/admindashboard"
 
       // Optional redirect
       // window.location.href = "/dashboard"
@@ -31,7 +31,7 @@ window.location.href = "/"
 
   return (
     <div className='mr-2 ml-2'>
-      
+
       <div id='new login'>
         <div className="backgroundlogin">
           <div className="shapelogin"></div>
@@ -59,19 +59,17 @@ window.location.href = "/"
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <a href='/admindashboard'>
-            <button
+          <button
             type='button'
             className='admin-btn'
             onClick={handleLogin}
           >
             Login
           </button>
-          </a>
-          
+
 
           <label>
-            To add organisation Click <a href='/SignupAdmin'><u>here</u></a>
+            To add organisation Click <a href='/signupadmin'><u>here</u></a>
           </label>
         </form>
       </div>
