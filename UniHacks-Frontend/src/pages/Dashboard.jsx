@@ -76,7 +76,7 @@ const Dashboard = () => {
         </div>
 
         {/* 2. Winding Queue Animation (Left Side) */}
-        <div className="absolute left-0 top-1/4 w-full h-full pointer-events-none hidden lg:block opacity-80">
+        <div className="absolute left-0 top-1/6 w-full h-full pointer-events-none hidden lg:block opacity-80">
   <svg width="400" height="600" viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
     {/* Background Path */}
     <path 
@@ -120,8 +120,8 @@ const Dashboard = () => {
           
           {/* Position Indicator Tag */}
           <g transform="translate(0, -45)" className="opacity-80">
-            <rect x="-15" y="-8" width="30" height="14" rx="7" fill="white" className="shadow-sm" />
-            <text x="0" y="2" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#059669" style={{fontFamily: 'Arial'}}>
+            <rect x="-15" y="-8" width="30" height="30" rx="7" fill="white" className="shadow-sm" />
+            <text x="0" y="15" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#059669" style={{fontFamily: 'Arial'}}>
               {`#${5-i}`}
             </text>
           </g>
@@ -167,6 +167,29 @@ const Dashboard = () => {
             </a>
           </div>
         </div>
+        {/* --- GRADIENT TRANSITION CURVE --- */}
+<div className="absolute bottom-[-2px] left-0 w-full overflow-hidden leading-[0] z-30 animate-curve-reveal">
+  <svg 
+    viewBox="0 0 1200 120" 
+    preserveAspectRatio="none" 
+    className="relative block w-full h-[80px] md:h-[120px]"
+    style={{ filter: 'drop-shadow(0px -12px 10px rgba(0,0,0,0.04))' }}
+  >
+    <defs>
+      {/* Horizontal Gradient: Transparent Left to Solid Right */}
+      <linearGradient id="fadeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#feffe0" stopOpacity="0" />
+        <stop offset="100%" stopColor="#feffe0" stopOpacity="1" />
+      </linearGradient>
+    </defs>
+    
+    <path 
+      d="M0,0 C480,100 720,100 1200,0 L1200,120 L0,120 Z" 
+      fill="url(#fadeGradient)" 
+      className="animate-wave-slow"
+    />
+  </svg>
+</div>
       </section>
 
       {/* --- FEATURES SECTION (UNTOUCHED) --- */}
@@ -283,7 +306,7 @@ const Dashboard = () => {
         /* 3. Typing Effect */
         @keyframes typing {
           from { width: 0 }
-          to { width: 100% }
+          to { width: 50% }
         }
         @keyframes blink {
           50% { border-color: transparent }
