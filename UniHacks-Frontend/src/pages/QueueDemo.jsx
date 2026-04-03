@@ -151,7 +151,9 @@ const QueueDemo = () => {
   const myEntry = state?.myEntry;
   const swapRequests = state?.swapRequests ?? [];
   const acceptedRequestsForMe = swapRequests.filter(
-    (request) => String(request.requesterUserId) === String(myEntry?.userId)
+    (request) => 
+      String(request.requesterUserId) === String(myEntry?.userId) &&
+      request.responses.some((response) => response.status === "accepted")
   );
   const activeOrganization = state?.organization
     ? {

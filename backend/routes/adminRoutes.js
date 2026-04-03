@@ -5,7 +5,8 @@ import {
   getDashboard,
   callNext,
   updateQueueStatus,
-  updateSettings
+  updateSettings,
+  getQRCode
 } from "../controllers/adminController.js";
 
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
@@ -18,5 +19,6 @@ router.get("/dashboard", protect, adminOnly, getDashboard);
 router.post("/call-next", protect, adminOnly, callNext);
 router.post("/status", protect, adminOnly, updateQueueStatus);
 router.put("/settings", protect, adminOnly, updateSettings);
+router.get("/qr/:organizationId", protect, adminOnly, getQRCode);
 
 export default router;

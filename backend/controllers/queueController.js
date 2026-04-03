@@ -278,6 +278,10 @@ const ensureDemoData = async () => {
         maxQueueLimit: org.queueLimit,
         queueLimit: org.queueLimit
       });
+      // Set organizationId and qrValue for new office
+      office.organizationId = String(office._id);
+      office.qrValue = `http://localhost:5174/joinqueue?organizationId=${office.organizationId}`;
+      await office.save();
     } else {
       office.name = org.name;
       office.category = office.category ?? org.category;
@@ -289,6 +293,15 @@ const ensureDemoData = async () => {
       office.maxQueueLimit = office.maxQueueLimit ?? org.queueLimit;
       office.queueLimit = office.queueLimit ?? org.queueLimit;
       office.createdBy = office.createdBy ?? admin._id;
+      await office.save();
+    }
+
+    // Set organizationId and qrValue if not set
+    if (!office.organizationId) {
+      office.organizationId = String(office._id);
+    }
+    if (!office.qrValue) {
+      office.qrValue = `http://localhost:5174/joinqueue?organizationId=${office.organizationId}`;
       await office.save();
     }
 

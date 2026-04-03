@@ -2,6 +2,7 @@ import Office from "../models/Office.js";
 import Queue from "../models/Queue.js";
 import { broadcastQueueState } from "./queueController.js";
 import { createNotification } from "../services/notificationService.js";
+import QRCode from "qrcode";
 
 const ACTIVE_QUEUE_STATUSES = ["waiting", "serving"];
 
@@ -43,7 +44,8 @@ const buildDashboardPayload = async (office) => {
       swapEnabled: office.swapEnabled,
       maxSwapsPerUser: office.maxSwapsPerUser,
       queueStatus: office.queueStatus,
-      currentToken: office.currentToken
+      currentToken: office.currentToken,
+      qrValue: office.qrValue
     },
     activeQueues: 1,
     totalWaiting: queueEntries.length,
@@ -97,6 +99,7 @@ export const createOrganization = async (req, res) => {
     });
 
     office.organizationId = String(office._id);
+    office.qrValue = `http://localhost:5174/joinqueue?organizationId=${office.organizationId}`;
     await office.save();
 
     res.status(201).json({
@@ -126,7 +129,8 @@ export const getAdminOrganizations = async (req, res) => {
         swapEnabled: office.swapEnabled,
         maxSwapsPerUser: office.maxSwapsPerUser,
         queueStatus: office.queueStatus,
-        currentToken: office.currentToken
+        currentToken: office.currentToken,
+        qrValue: office.qrValue
       }))
     );
   } catch (error) {
@@ -262,5 +266,33 @@ export const updateSettings = async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+export const getQRCode = async (req, res) => {
+  try {
+    const { organizationId } = req.params;
+    const office = await getOrganizationForAdmin(req.user.id, organizationId);
+
+    if (!office.qrValue) {
+      return res.status(404).json({ message: "QR code not available for this organization" });
+    }
+
+    const qrDataURL = await QRCode.toDataURL(office.qrValue, {
+      width: 256,
+      margin: 2,
+      color: {
+        dark: '#000000',
+        light: '#FFFFFF'
+      }
+    });
+
+    res.json({
+      qrDataURL,
+      qrValue: office.qrValue,
+      organizationName: office.name
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

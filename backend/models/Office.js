@@ -38,7 +38,8 @@ const officeSchema = new mongoose.Schema(
       required: true
     },
     currentToken: { type: Number, default: 0 },
-    isPaused: { type: Boolean, default: false }
+    isPaused: { type: Boolean, default: false },
+    qrValue: { type: String, default: null }
   },
   { timestamps: true }
 );

@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { Camera, X } from "lucide-react";
+import { Html5QrcodeScanner } from "html5-qrcode";
 import CurvedLoop from "../components/CurvedLoop";
 import ElectricBorder from "../components/ElectricBorder";
 
@@ -23,6 +25,47 @@ const Search = () => {
   const [activeTag, setActiveTag] = useState("All");
   const [sortBy, setSortBy] = useState("default");
   const [offices, setOffices] = useState([]);
+  const [showQRScanner, setShowQRScanner] = useState(false);
+
+  useEffect(() => {
+    let scanner = null;
+
+    if (showQRScanner) {
+      scanner = new Html5QrcodeScanner("qr-reader", {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1.0,
+      });
+
+      scanner.render(
+        (decodedText) => {
+          // Handle successful scan
+          setShowQRScanner(false);
+          
+          // Check if it's a valid queue URL
+          if (decodedText.includes("joinqueue?organizationId=")) {
+            const url = new URL(decodedText);
+            const organizationId = url.searchParams.get("organizationId");
+            if (organizationId) {
+              handleJoin(organizationId);
+            }
+          } else {
+            alert("Invalid QR code. Please scan a valid queue QR code.");
+          }
+        },
+        (error) => {
+          // Handle scan error (usually just ignore)
+          console.log("QR scan error:", error);
+        }
+      );
+    }
+
+    return () => {
+      if (scanner) {
+        scanner.clear().catch(console.error);
+      }
+    };
+  }, [showQRScanner]);
 
   useEffect(() => {
     const fetchOffices = async () => {
@@ -106,8 +149,14 @@ const Search = () => {
               placeholder="Search offices..."
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl shadow-sm outline-none focus:border-emerald-400 font-bold text-sm transition-all"
+              className="w-full pl-10 pr-12 py-2.5 bg-white border border-gray-200 rounded-xl shadow-sm outline-none focus:border-emerald-400 font-bold text-sm transition-all"
             />
+            <button
+              onClick={() => setShowQRScanner(true)}
+              className="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-emerald-600 transition-colors"
+            >
+              <Camera className="w-5 h-5" />
+            </button>
           </div>
 
           <div className="w-full md:w-1/3">
@@ -195,6 +244,41 @@ const Search = () => {
           text-transform: none;
         }
       `}</style>
+
+      {/* QR Scanner Modal */}
+      <AnimatePresence>
+        {showQRScanner && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+            onClick={() => setShowQRScanner(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-2xl p-6 max-w-md w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-black text-gray-800">Scan QR Code</h3>
+                <button
+                  onClick={() => setShowQRScanner(false)}
+                  className="p-1 rounded-full hover:bg-gray-100"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div id="qr-reader" className="w-full"></div>
+              <p className="text-sm text-gray-600 mt-4 text-center">
+                Point your camera at a queue QR code to join instantly
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

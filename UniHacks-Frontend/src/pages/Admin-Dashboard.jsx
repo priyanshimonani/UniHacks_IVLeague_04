@@ -35,6 +35,78 @@ const STATUS_LABELS = {
   closed: "Closed"
 };
 
+const QRCodeDisplay = ({ organizationId, organizationName }) => {
+  const [qrData, setQrData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchQR = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`${API_BASE}/qr/${organizationId}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setQrData(response.data);
+      } catch (err) {
+        setError(err.response?.data?.message || "Failed to load QR code");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (organizationId) {
+      fetchQR();
+    }
+  }, [organizationId]);
+
+  const downloadQR = () => {
+    if (!qrData?.qrDataURL) return;
+    
+    const link = document.createElement('a');
+    link.href = qrData.qrDataURL;
+    link.download = `${organizationName}-QR.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  if (loading) {
+    return (
+      <div className="w-64 h-64 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">
+        <div className="text-gray-400">Loading QR...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-64 h-64 bg-red-50 border border-red-200 rounded-lg flex items-center justify-center">
+        <div className="text-red-600 text-center">
+          <div className="font-semibold">Error</div>
+          <div className="text-sm">{error}</div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col items-center space-y-4">
+      <img 
+        src={qrData.qrDataURL} 
+        alt={`QR Code for ${organizationName}`} 
+        className="w-64 h-64"
+      />
+      <button
+        onClick={downloadQR}
+        className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium"
+      >
+        Download QR Code
+      </button>
+    </div>
+  );
+};
+
 export default function AdminDashboard() {
   const token = localStorage.getItem("token");
 
@@ -448,6 +520,29 @@ export default function AdminDashboard() {
               )}
             </section>
           </div>
+
+          {organization && (
+            <div className="lg:col-span-8">
+              <section className="rounded-[2.5rem] border border-gray-50 bg-white p-8 shadow-sm">
+                <div className="mb-6 flex items-center justify-between">
+                  <div>
+                    <h3 className="text-2xl font-black text-gray-900">QR Code</h3>
+                    <p className="mt-2 text-sm font-medium text-gray-500">
+                      Share this QR code for instant queue joining.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="rounded-2xl border border-gray-200 bg-white p-4">
+                    <QRCodeDisplay organizationId={organization._id} organizationName={organization.name} />
+                  </div>
+                  <p className="text-xs text-gray-500 text-center max-w-md">
+                    Users can scan this QR code to join your queue instantly without searching.
+                  </p>
+                </div>
+              </section>
+            </div>
+          )}
 
           <div className="space-y-6 lg:col-span-4">
             <button
